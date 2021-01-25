@@ -61,7 +61,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:2.47.1"
 
 
-    runtime 'mysql:mysql-connector-java:5.1.47'
+    compile 'mysql:mysql-connector-java:5.1.47'
     compile 'org.grails.plugins:redis:2.0.5'
 }
 
