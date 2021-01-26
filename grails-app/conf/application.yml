@@ -82,9 +82,14 @@ grails:
         host: "localhost"
         port: 6379
 #        password: ""
-        pooled: true
-        resources: 15
-        timeout: 5000
+#        pooled: true
+        poolConfig:
+            maxTotal: 600
+            minIdle: 20
+            maxWaitMillis: -1
+#        resources: 15
+#        timeout: 5000
+
 
 endpoints:
     jmx:
@@ -103,7 +108,7 @@ dataSource:
     driverClassName: com.mysql.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     url: jdbc:mysql://127.0.0.1:3306/select_seat_db
-    dbCreate: update
+    dbCreate: create-drop
     username: root
     password: '53434976'
     properties:

@@ -63,6 +63,7 @@ dependencies {
 
     compile 'mysql:mysql-connector-java:5.1.47'
     compile 'org.grails.plugins:redis:2.0.5'
+    compile 'io.lettuce:lettuce-core:6.0.2.RELEASE'
 }
 
 bootRun {
