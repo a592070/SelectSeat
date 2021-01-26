@@ -110,7 +110,8 @@ dataSource:
     url: jdbc:mysql://127.0.0.1:3306/select_seat_db
     dbCreate: create-drop
     username: root
-    password: '53434976'
+#    password: '53434976'
+    password: '42760988'
     properties:
         maxActive: 15
         initialSize: 5

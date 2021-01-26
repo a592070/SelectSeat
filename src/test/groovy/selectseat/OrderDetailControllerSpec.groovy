@@ -1,9 +1,9 @@
 package selectseat
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class SiteSpec extends Specification implements DomainUnitTest<Site> {
+class OrderDetailControllerSpec extends Specification implements ControllerUnitTest<OrderDetailController> {
 
     def setup() {
     }

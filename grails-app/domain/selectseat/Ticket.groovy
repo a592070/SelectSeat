@@ -2,7 +2,7 @@ package selectseat
 
 class Ticket {
 /* Default (injected) attributes of GORM */
-    long id
+    Long id
     Long version
 
     String type
@@ -12,8 +12,8 @@ class Ticket {
     static belongsTo = [event: Event]
 
     static constraints = {
-        type nullable: false
-        stock nullable: false
-        price nullable: false
+        type nullable: false, blank: false
+        stock nullable: false, blank: false
+        price nullable: false, blank: false
     }
 }
