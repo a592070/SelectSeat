@@ -10,7 +10,7 @@ class Event {
     Date date
 
 //    一個 site 有多個 event
-    static belongsTo = [site: Site]
+    static belongsTo = [location: Location]
 
     static hasMany = [tickets: Ticket]
 

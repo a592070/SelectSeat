@@ -5,8 +5,9 @@ class User {
     Long version
 
     String email
+    static hasMany = [orders:OrderList]
 
     static constraints = {
-        email nullable: false, unique: true
+        email email: true, blank: false, nullable: false, unique: true
     }
 }

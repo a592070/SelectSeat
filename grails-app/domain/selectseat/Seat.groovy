@@ -1,15 +1,18 @@
 package selectseat
 
-class SeatRecord {
+class Seat {
 /* Default (injected) attributes of GORM */
-    long id
+    Long id
     Long version
 
     String siteBitmap
+    String xAxis
+    String yAxis
 
-    Area area
+    static belongsTo = [zone:Zone]
     static constraints = {
         siteBitmap nullable: false
-        area nullable: false
+        xAxis nullable: false
+        yAxis nullable: false
     }
 }

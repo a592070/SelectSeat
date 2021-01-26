@@ -2,19 +2,23 @@ package selectseat
 
 class OrderDetail {
     Long id;
-    String type;
+    Long version;
 
     /* Automatic timestamping of GORM */
     Date dateCreated
     Date lastUpdated
 
-    String areaSeatCode
+    String zoneName
+    String seatCode
+    String ticketType
+    int ticketPrice
 
-    Order order
-    Ticket ticket
-    Area area
+    static belongsTo = [order: OrderList]
 
     static constraints = {
-        areaSeatCode nullable: false, unique: true
+        zoneName nullable: false, blank: false
+        seatCode nullable: false, blank: false
+        ticketType nullable: false, blank: false
+        ticketPrice nullable: false, blank: false
     }
 }

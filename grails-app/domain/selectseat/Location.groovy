@@ -1,17 +1,15 @@
 package selectseat
 
-class Area {
+class Location {
+
 /* Default (injected) attributes of GORM */
-    long id
+    Long id
     Long version
 
     String name
-    int  number
 
-    Event event
-
+    static hasMany = [events:Event]
     static constraints = {
-        name nullable: false
-        number nullable: false
+        name nullable: false, blank: false
     }
 }
