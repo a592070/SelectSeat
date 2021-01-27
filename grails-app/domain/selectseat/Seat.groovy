@@ -5,14 +5,14 @@ class Seat {
     Long id
     Long version
 
-    String seatBitmap
-    String xAxis
-    String yAxis
+    String siteBitmap
+    String columnName
+    int rowAmount
 
     static belongsTo = [zone:Zone]
     static constraints = {
-        seatBitmap nullable: false
-        xAxis nullable: false
-        yAxis nullable: false
+        siteBitmap nullable: false
+        columnName nullable: false
+        rowAmount nullable: false
     }
 }
