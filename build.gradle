@@ -20,6 +20,7 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
 
+
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
@@ -62,8 +63,9 @@ dependencies {
 
 
     compile 'mysql:mysql-connector-java:5.1.47'
+    compile "org.hibernate:hibernate-ehcache"
     compile 'org.grails.plugins:redis:2.0.5'
-    compile 'io.lettuce:lettuce-core:6.0.2.RELEASE'
+    compile "org.grails.plugins:redis-gorm:6.0.4"
 }
 
 bootRun {

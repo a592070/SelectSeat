@@ -10,4 +10,14 @@ class User {
     static constraints = {
         email email: true, blank: false, nullable: false, unique: true
     }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", version=" + version +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
