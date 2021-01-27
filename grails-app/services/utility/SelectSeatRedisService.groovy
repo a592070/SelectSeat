@@ -9,13 +9,14 @@ class SelectSeatRedisService {
 
 //    def eventId
 //    def zoneId
-//    final static String REDIS_KEY_SEAT_MAP = "event:${eventId}:zone:${zoneId}"
-//    final static String REDIS_KEY_SEAT = "event:${eventId}:zone:${zoneId}"
+    static String REDIS_KEY_SEAT_MAP = "event:${eventId}:zone:${zoneId}"
+    static String REDIS_KEY_SEAT = "event:${eventId}:zone:${zoneId}"
 
 
 
     def serviceMethod() {
     }
+
 
     Map<String, List<Integer>> getSeatMap(int eventId, int zoneId){
         String REDIS_KEY_SEAT_MAP = "event:${eventId}:zone:${zoneId}"

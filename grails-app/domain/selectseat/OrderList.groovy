@@ -1,5 +1,7 @@
 package selectseat
 
+import utility.ToolService
+
 class OrderList {
     Long id
     Long version
@@ -17,6 +19,7 @@ class OrderList {
     static belongsTo = [user: User]
     static hasMany = [orderDetails: OrderDetail]
 
+    static final String CODE_PREFIX = "O"
 
     static constraints = {
         orderCode nullable: false, unique: true
@@ -24,5 +27,12 @@ class OrderList {
         totalPrice nullable: false
         eventName nullable: false
         locationName nullable: false
+    }
+    def beforeInsert(){
+        def tmpNo = CODE_PREFIX + ToolService.generateRandomWord(5,true)
+        while(OrderList.countByOrderCode(tmpNo) ){
+            tmpNo = CODE_PREFIX +ToolService.generateRandomWord(5,true)
+        }
+        this.orderCode = tmpNo
     }
 }

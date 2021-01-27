@@ -6,14 +6,18 @@ class Zone {
     Long version
 
     String name
-    int  number
 
+    def number = {
+        int num
+        seats.each {num += it.rowAmount}
+        return num
+    }
 
-    static belongsTo = [event:Event]
+    static belongsTo = [event: Event]
+    static hasMany = [seats: Seat]
 
     static constraints = {
         name nullable: false
-        number nullable: false
-
+//        number nullable: false
     }
 }
