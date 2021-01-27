@@ -8,13 +8,12 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
-    redis-gorm:
-        host: "localhost"
-        port: 6380
-#        password: "secret"
-        pooled: true
-        resources: 15
-        timeout: 5000
+#    redis-gorm:
+#        host: "localhost"
+#        port: 6379
+#        pooled: true
+#        resources: 15
+#        timeout: 5000
 info:
     app:
         name: '@info.app.name@'

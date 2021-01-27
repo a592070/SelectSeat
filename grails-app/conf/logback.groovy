@@ -9,16 +9,17 @@ conversionRule 'clr', ColorConverter
 conversionRule 'wex', WhitespaceThrowableProxyConverter
 
 // See http://logback.qos.ch/manual/groovy.html for details on configuration
+def logPattern = '[%-5p] %d{MM-dd HH:mm:ss.SSS} %c{0} - %m%n'
 appender('STDOUT', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
         charset = Charset.forName('UTF-8')
 
-        pattern =
-                '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} ' + // Date
-                        '%clr(%5p) ' + // Log level
-                        '%clr(---){faint} %clr([%15.15t]){faint} ' + // Thread
-                        '%clr(%-45.45logger{39}){cyan} %clr(:){faint} ' + // Logger
-                        '%m%n%wex' // Message
+        pattern = logPattern
+//                '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} ' + // Date
+//                        '%clr(%5p) ' + // Log level
+//                        '%clr(---){faint} %clr([%15.15t]){faint} ' + // Thread
+//                        '%clr(%-45.45logger{39}){cyan} %clr(:){faint} ' + // Logger
+//                        '%m%n%wex' // Message
     }
 }
 
@@ -35,4 +36,4 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 }
 root(ERROR, ['STDOUT'])
 logger("org.hibernate.SQL", DEBUG, ["STDOUT"], false)
-logger 'org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT'], false
+logger ('org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT'], false)

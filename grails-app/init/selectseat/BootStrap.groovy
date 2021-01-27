@@ -1,30 +1,36 @@
 package selectseat
 
+import grails.gorm.transactions.Transactional
+
 class BootStrap {
 
     def init = { servletContext ->
 
         if (!Location.all && !User.all)
         initData()
-
         }
 
 
     def destroy = {
     }
+    @Transactional
     private initData(){
         def today = new Date()
+
         def l1 =new Location(name: "文化中心").save()
         def l2 = new Location(name: "中正紀念堂").save()
+
         def e1 = new Event(eventCode: "E012345", name: "測試活動一號",date: today, location: l1).save()
         def e2 = new Event(eventCode: "E012346", name: "測試活動二號",date: today, location: l1).save()
-        def e3 = new Event(eventCode: "E012346", name: "測試活動三號",date: today, location: l2).save()
-        def e1AdultTicket = new Ticket(type: "全票", price: 1000, stock: "50", event: e1).save()
-        def e1HalfTicket = new Ticket(type: "半票", price: 500, stock: "50", event: e1).save()
-        def e2AdultTicket = new Ticket(type: "全票", price: 1600, stock: "30", event: e1).save()
-        def e2HalfTicket = new Ticket(type: "半票", price: 1000, stock: "30", event: e1).save()
-        def e3AdultTicket = new Ticket(type: "全票", price: 100, stock: "50", event: e2).save()
-        def e3HalfTicket = new Ticket(type: "半票", price: 50, stock: "50", event: e2).save()
+        def e3 = new Event(eventCode: "E012347", name: "測試活動三號",date: today, location: l2).save()
+
+        def e1AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 1000, stock: 50, event: e1).save()
+        def e1HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 500, stock: 50, event: e1).save()
+        def e2AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 1600, stock: 30, event: e2).save()
+        def e2HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 1000, stock: 30, event: e2).save()
+        def e3AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 100, stock: 50, event: e3).save()
+        def e3HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 50, stock: 50, event: e3).save()
+
         def e1ZoneA = new Zone(name: "活動一的 A 區",number: 50, event: e1).save()
         def e1ZoneB = new Zone(name: "活動一的 B 區",number: 30, event: e1).save()
         def e2Zone = new Zone(name: "活動二",number: 50, event: e2).save()
@@ -39,6 +45,33 @@ class BootStrap {
         def seatE1ZoneBD = new Seat(siteBitmap: "0000000000", columnName: "D", rowAmount: 10, zone: e1ZoneB).save()
         def admin = new User(email: "admin@user.com").save()
         def member = new User(email: "member@user.com").save()
+
+//        l1.save()
+//        l2.save()
+//        e1.save()
+//        e2.save()
+//        e3.save()
+//        e1AdultTicket.save()
+//        e1HalfTicket.save()
+//        e2AdultTicket.save()
+//        e2HalfTicket.save()
+//        e3AdultTicket.save()
+//        e3HalfTicket.save()
+//        e1ZoneA.save()
+//        e1ZoneB.save()
+//        e2Zone.save()
+//        seatE1ZoneAA.save()
+//        seatE1ZoneAB.save()
+//        seatE1ZoneAC.save()
+//        seatE1ZoneAD.save()
+//        seatE1ZoneAE.save()
+//        seatE1ZoneBA.save()
+//        seatE1ZoneBB.save()
+//        seatE1ZoneBC.save()
+//        seatE1ZoneBD.save()
+//        admin.save()
+//        member.save()
+
 
     }
 }

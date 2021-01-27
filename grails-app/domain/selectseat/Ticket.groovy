@@ -9,6 +9,10 @@ class Ticket {
     int stock
     int price
 
+    final static String TYPE_ADULT_TICKET = "全票"
+    final static String TYPE_HALF_TICKET = "半票"
+
+
     static belongsTo = [event: Event]
 
     static constraints = {

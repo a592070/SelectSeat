@@ -9,10 +9,14 @@ class Seat {
     String columnName
     int rowAmount
 
+//    transient redisService
+
     static belongsTo = [zone:Zone]
     static constraints = {
         siteBitmap nullable: false
         columnName nullable: false
         rowAmount nullable: false
     }
+
+
 }

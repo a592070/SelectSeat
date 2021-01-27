@@ -1,8 +1,7 @@
 package selectseat
 
-import grails.converters.JSON
+
 import grails.plugins.redis.RedisService
-import redis.ZoneSeat
 
 
 class DemoRedisController {
@@ -72,13 +71,13 @@ class DemoRedisController {
 
 
 //        def tmp = ZoneSeat.get(1)
-        def tmp = new ZoneSeat()
-        tmp.eventId = 1
-        tmp.zoneId = 1
-//        redisService.set("person", tmp as JSON)
-        redisService.memoizeObject(ZoneSeat, "person", tmp)
+//        def tmp = new ZoneSeat()
+//        tmp.eventId = 1
+//        tmp.zoneId = 1
+////        redisService.set("person", tmp as JSON)
+//        redisService.memoizeObject(ZoneSeat, "person", tmp)
 
-        println(tmp)
+//        println(tmp)
         def keys = redisService.keys("*")
         println(keys)
         def person = redisService.person
