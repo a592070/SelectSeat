@@ -6,13 +6,13 @@ class Seat {
     Long version
 
     String siteBitmap
-    String xAxis
-    String yAxis
+    String columnName
+    int rowAmount
 
     static belongsTo = [zone:Zone]
     static constraints = {
         siteBitmap nullable: false
-        xAxis nullable: false
-        yAxis nullable: false
+        columnName nullable: false
+        rowAmount nullable: false
     }
 }

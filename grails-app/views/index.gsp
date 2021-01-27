@@ -51,6 +51,9 @@
 
 <div id="content" role="main">
     <section class="row colset-2-its">
+        <h3><g:link url="[action: 'index', controller: 'frontPage']">查詢活動點這裡</g:link></h3>
+    </section>
+    <section class="row colset-2-its">
         <h1>Welcome to Grails</h1>
 
         <p>
@@ -60,6 +63,7 @@
             this application, click on each to execute its default action:
         </p>
 
+        <br>
         <div id="controllers" role="navigation">
             <h2>Available Controllers:</h2>
             <ul>
@@ -71,6 +75,7 @@
             </ul>
         </div>
     </section>
+
 </div>
 
 </body>
