@@ -15,16 +15,13 @@ class DemoRedisController {
                        "d":[0,0,0,1,0,1,0,0,0],
                        "e":[0,0,0,0,1,0,0,0,0]]
 
-        redisService.withRedis { Jedis redis ->
+//        redisService.withRedis { Jedis redis ->
 //            for (i in 0..<bitmap2.size()) {
 //                redis.setbit("bitmap", i, bitmap.get(i)==1)
 //            }
-            bitmap2.keySet().forEach({ k ->
-                for (i in 0..<bitmap2.k.size()) {
-                    redis.setbit(k, i, bitmap2.k == 1)
-                }
-            })
-        }
+//        }
+        redisService.hmset("bitmap", bitmap2)
+//        redisService.memoizeHash("bitmap", bitmap2, null)
 
 //        redisService.withRedis { Jedis redis ->
 //            def tmp = (Math.random() + 0.5)
@@ -33,13 +30,14 @@ class DemoRedisController {
 //        }
 
         def tmp = []
-        redisService.withRedis { Jedis redis ->
+//        redisService.withRedis { Jedis redis ->
 //            for (i in 0..<bitmap.size()) {
 //                 tmp.add(redis.getbit("bitmap", i))
 //            }
-
-            println(tmp)
-        }
+//            println(tmp)
+//        }
+        tmp = redisService.hget("bitmap")
+        println(tmp)
         render tmp
     }
 }
