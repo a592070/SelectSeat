@@ -9,8 +9,8 @@ class SelectSeatRedisService {
 
 //    def eventId
 //    def zoneId
-    static String REDIS_KEY_SEAT_MAP = "event:${eventId}:zone:${zoneId}"
-    static String REDIS_KEY_SEAT = "event:${eventId}:zone:${zoneId}"
+    static String REDIS_KEY_SEAT_MAP = "event:0:zone:0"
+    static String REDIS_KEY_SEAT = "event:0:zone:0"
 
 
 

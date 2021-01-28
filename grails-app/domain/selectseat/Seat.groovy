@@ -1,5 +1,6 @@
 package selectseat
 
+import grails.plugins.redis.RedisService
 import utility.ToolService
 
 class Seat {
@@ -7,23 +8,24 @@ class Seat {
     Long id
     Long version
 
-    String seatBitmap
+    String seatBitmap = ""
     String columnName
     int rowAmount
 
-    String seatCode
+    String seatCode = "S00000"
 
     static belongsTo = [zone:Zone]
 
     static final String CODE_PREFIX = "S"
 
-    transient redisService
-    static String REDIS_KEY_SEAT_MAP = "event:${zone.eventId}:zone:${zoneId}"
+    transient RedisService redisService
+    static transient String REDIS_KEY_SEAT_MAP = "event:0:zone:0:seat:0"
 
     static constraints = {
         seatBitmap nullable: false
         columnName nullable: false
         rowAmount nullable: false
+        seatCode nullable: false, unique: true
     }
 
 //    def getSeatBitMap(){
@@ -31,12 +33,28 @@ class Seat {
 //    }
 
     def beforeInsert(){
-        seatBitmap = "0"*rowAmount
+        println("====Seat beforeInsert====")
+        def seatList = []
+        for (i in 0..<rowAmount) {
+            seatList << 0
+        }
+        seatBitmap = seatList as String
+        println seatBitmap
         def tmpNo = CODE_PREFIX + ToolService.generateRandomWord(5,true)
-        while(OrderList.countByOrderCode(tmpNo) ){
+        while(Seat.countBySeatCode(tmpNo) ){
             tmpNo = CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
-        this.orderCode = tmpNo
+        seatCode = tmpNo
+        println(seatCode)
+    }
+    def afterInsert(){
+        updateRedisKeySeatMap()
+    }
+    def afterUpdate(){
+        updateRedisKeySeatMap()
+    }
+    def updateRedisKeySeatMap(){
+        REDIS_KEY_SEAT_MAP = "event:${zone.eventId}:zone:${zoneId}:seat:${id}"
     }
 
 

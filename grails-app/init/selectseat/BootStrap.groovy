@@ -34,17 +34,21 @@ class BootStrap {
         def e1ZoneA = new Zone(name: "活動一的 A 區",number: 50, event: e1).save()
         def e1ZoneB = new Zone(name: "活動一的 B 區",number: 30, event: e1).save()
         def e2Zone = new Zone(name: "活動二",number: 50, event: e2).save()
-        def seatE1ZoneAA = new Seat(siteBitmap: "0000000000", columnName: "A", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAB = new Seat(siteBitmap: "0000000000", columnName: "B", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAC = new Seat(siteBitmap: "0000000000", columnName: "C", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAD = new Seat(siteBitmap: "0000000000", columnName: "D", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAE = new Seat(siteBitmap: "0000000000", columnName: "E", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneBA = new Seat(siteBitmap: "00000", columnName: "A", rowAmount: 5, zone: e1ZoneB).save()
-        def seatE1ZoneBB = new Seat(siteBitmap: "0000000000", columnName: "B", rowAmount: 10, zone: e1ZoneB).save()
-        def seatE1ZoneBC = new Seat(siteBitmap: "00000", columnName: "C", rowAmount: 5, zone: e1ZoneB).save()
-        def seatE1ZoneBD = new Seat(siteBitmap: "0000000000", columnName: "D", rowAmount: 10, zone: e1ZoneB).save()
         def admin = new User(email: "admin@user.com").save()
         def member = new User(email: "member@user.com").save()
+        println "before seat"
+        def seatE1ZoneAA = new Seat(columnName: "A", rowAmount: 10, zone: e1ZoneA).save()
+//        println seatE1ZoneAA.seatCode
+        def seatE1ZoneAB = new Seat(columnName: "B", rowAmount: 10, zone: e1ZoneA).save()
+//        println seatE1ZoneAB.seatBitmap
+        def seatE1ZoneAC = new Seat(columnName: "C", rowAmount: 10, zone: e1ZoneA).save()
+        def seatE1ZoneAD = new Seat(columnName: "D", rowAmount: 10, zone: e1ZoneA).save()
+        def seatE1ZoneAE = new Seat(columnName: "E", rowAmount: 10, zone: e1ZoneA).save()
+        def seatE1ZoneBA = new Seat(columnName: "A", rowAmount: 5, zone: e1ZoneB).save()
+        def seatE1ZoneBB = new Seat(columnName: "B", rowAmount: 10, zone: e1ZoneB).save()
+        def seatE1ZoneBC = new Seat(columnName: "C", rowAmount: 5, zone: e1ZoneB).save()
+        def seatE1ZoneBD = new Seat(columnName: "D", rowAmount: 10, zone: e1ZoneB).save()
+        println "after seat"
 
     }
 }

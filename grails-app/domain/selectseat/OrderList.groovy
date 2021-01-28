@@ -12,7 +12,7 @@ class OrderList {
 
     int totalNumber
     int totalPrice
-    String orderCode
+    String orderCode = "O00000"
     String eventName
     String locationName
 
