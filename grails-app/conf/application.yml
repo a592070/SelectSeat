@@ -151,3 +151,14 @@ environments:
 #                testOnReturn: false
 #                jdbcInterceptors: ConnectionState
 #                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+
+rabbitmq:
+    connections:
+        - name: main
+          host: localhost
+          port: 5672
+          username: guest
+          password: guest
+    queues:
+        - name: seatQueue
