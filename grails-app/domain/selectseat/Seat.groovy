@@ -5,6 +5,9 @@ class Seat {
     Long id
     Long version
 
+    // 0,0,0,1,0
+    // [[true,...],
+    // [xxx]]
     String siteBitmap
     String columnName
     int rowAmount
