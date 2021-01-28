@@ -7,7 +7,7 @@ class Event {
     Long id
     Long version
 
-    String eventCode = "E00000"
+    String eventCode
     String name
     Date date
 
@@ -21,9 +21,9 @@ class Event {
     static final String CODE_PREFIX = "E"
 
     static constraints = {
-        eventCode nullable: false, unique: true
+        eventCode nullable: true, unique: true
         name nullable: false
-        date nullable: false
+        date nullable: true
     }
 
     def beforeInsert(){

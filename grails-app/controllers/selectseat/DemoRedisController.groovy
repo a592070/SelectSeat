@@ -1,6 +1,6 @@
 package selectseat
 
-
+import grails.converters.JSON
 import grails.plugins.redis.RedisService
 
 
@@ -80,8 +80,20 @@ class DemoRedisController {
 //        println(tmp)
         def keys = redisService.keys("*")
         println(keys)
-        def person = redisService.person
-        println person
-        render "null"
+
+
+//        def seat = seatService.findSeat(4)
+//        println seat.seatBitmap
+//        println seat.REDIS_KEY_SEAT_MAP
+//        def seat = seatService.findAllByZone(4)
+//        def seat = Seat.findAllByZone(Zone.get(1))
+//        seat.each {println it.seatBitmap}
+
+//        def seat = seatService.getSeats(4)
+
+        def zone = Zone.find(1)
+        println zone.seats
+
+        render zone as JSON
     }
 }

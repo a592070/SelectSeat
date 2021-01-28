@@ -9,7 +9,7 @@ conversionRule 'clr', ColorConverter
 conversionRule 'wex', WhitespaceThrowableProxyConverter
 
 // See http://logback.qos.ch/manual/groovy.html for details on configuration
-def logPattern = '[%-5p] %d{MM-dd HH:mm:ss.SSS} %c{0} - %m%n'
+def logPattern = '[%-5p][%thread] %d{MM-dd HH:mm:ss.SSS} %c{0} - %m%n'
 appender('STDOUT', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
         charset = Charset.forName('UTF-8')
@@ -37,3 +37,4 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 root(ERROR, ['STDOUT'])
 logger("org.hibernate.SQL", DEBUG, ["STDOUT"], false)
 logger ('org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT'], false)
+logger ('org.hibernate.engine.transaction.internal.TransactionImpl', DEBUG, ['STDOUT'], false)

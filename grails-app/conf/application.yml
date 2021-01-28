@@ -104,6 +104,8 @@ endpoints:
 ---
 hibernate:
     format_sql: true
+    flush:
+        mode: COMMIT
     cache:
         queries: false
         use_second_level_cache: false
@@ -116,8 +118,8 @@ dataSource:
     url: jdbc:mysql://127.0.0.1:3306/select_seat_db
     dbCreate: update
     username: root
-#    password: '53434976'
-    password: '42760988'
+    password: '53434976'
+#    password: '42760988'
     properties:
         maxActive: 15
         initialSize: 5
@@ -126,13 +128,14 @@ dataSource:
 
 
 
-environments:
-    development:
-        dataSource:
-    test:
-        dataSource:
-    production:
-        dataSource:
+
+#environments:
+#    development:
+#        dataSource:
+#    test:
+#        dataSource:
+#    production:
+#        dataSource:
 #            properties:
 #                jmxEnabled: true
 #                initialSize: 5
