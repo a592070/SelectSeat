@@ -8,7 +8,7 @@ class FrontPageController {
 
     def eventSearch(String query){
         def eventList = Event.createCriteria().list{
-            ilike "name", "%${query}%"
+            like "name", "%${query}%"
         }
 
         return [eventList:eventList,
