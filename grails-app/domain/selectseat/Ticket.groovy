@@ -1,5 +1,8 @@
 package selectseat
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class Ticket {
 /* Default (injected) attributes of GORM */
     Long id
