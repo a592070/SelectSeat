@@ -8,6 +8,7 @@ class Seat {
     Long id
     Long version
 
+    // [0,0,0,0,0]
     List<Integer> seatBitmap
 
     String columnName
