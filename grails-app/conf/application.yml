@@ -160,8 +160,11 @@ rabbitmq:
     connections:
         - name: main
           host: localhost
-          port: 5672
-          username: guest
-          password: guest
+          username: admin
+          password: admin
     queues:
         - name: seatQueue
+#spring:
+#    rabbitmq:
+#        username: guest
+#        password: admin
