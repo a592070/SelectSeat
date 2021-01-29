@@ -23,7 +23,7 @@ class LogAopService {
 
     @Before("pointCut()")
     def doBefore(){
-        logger.debug("================aop before")
-        println "================aop before"
+//        logger.debug("================aop before")
+//        println "================aop before"
     }
 }
