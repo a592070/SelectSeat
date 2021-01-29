@@ -12,11 +12,11 @@ interface ITicketRecordService{
     TicketRecord findByRecordId(Long id)
 
 
-//    @Query("select $t.count from ${TicketRecord a} where $t.ticketId = $recordIdParam")
-//    List<Integer> findTicketRecordId(Long recordIdParam)
-//
-//    @Query("update ${TicketRecord t} set ${t.count} = ${t.count} + 1 where $t.ticketId = $recordIdParam")
-//    Number updateViews(Long recordIdParam)
+    @Query("select $t.count from ${TicketRecord t} where $t.id = $recordIdParam")
+    List<Integer> findTicketRecordId(Long recordIdParam)
+
+    @Query("update ${TicketRecord t} set ${t.count} = ${t.count} + 1 where $t.id = $recordIdParam")
+    Number updateViews(Long recordIdParam)
 }
 
 @Service(TicketRecord)

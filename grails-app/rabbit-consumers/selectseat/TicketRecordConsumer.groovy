@@ -10,7 +10,7 @@ class BookPageViewConsumer {
 
     TicketRecordService ticketRecordService
 
-    static rabbitConfig = [ //<2>
+    static rabbitConfig = [
             queue: "seatQueue"
     ]
 
@@ -23,6 +23,6 @@ class BookPageViewConsumer {
      */
     def handleMessage(Map body, MessageContext messageContext) {
         log.debug '{}', body.toString()
-
+        ticketRecordService.increment((Long) body.id, (String) body.type)
     }
 }
