@@ -1,6 +1,5 @@
 package selectseat
 
-import annotation.SeatAspect
 import grails.gorm.transactions.Transactional
 import grails.plugins.redis.RedisService
 import org.springframework.stereotype.Service

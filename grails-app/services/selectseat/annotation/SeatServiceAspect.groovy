@@ -1,13 +1,11 @@
-package annotation
+package selectseat.annotation
 
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
-//@Retention(RetentionPolicy.RUNTIME)
-//@Target(ElementType.METHOD)
-@interface SeatAspect {
-    boolean value() default true
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface SeatServiceAspect {
 }

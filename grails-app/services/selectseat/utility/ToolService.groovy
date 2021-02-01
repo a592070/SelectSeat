@@ -1,4 +1,4 @@
-package utility
+package selectseat.utility
 
 import grails.gorm.transactions.Transactional
 
