@@ -33,7 +33,8 @@ public class SeatServiceAspect {
     @Before("getColumnSeatPoint(seatCode)")
 //    @Before("execution(* selectseat.SeatService.getColumnSeat(..))")
     public void beforeMethod2(JoinPoint joinPoint, String seatCode){
-        System.out.println("-- Before Method getColumnSeatPoint --"+ Arrays.toString(joinPoint.getArgs()));
+        System.out.println("-- Before Method getColumnSeatPoint --"+ seatCode);
+        System.out.println(Arrays.toString(joinPoint.getArgs()));
     }
 
 //    @Before("@annotation(selectseat.annotation.SeatServiceAspect)")
