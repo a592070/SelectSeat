@@ -37,17 +37,59 @@ class BootStrap {
         def admin = new User(email: "admin@user.com").save()
         def member = new User(email: "member@user.com").save()
         println "before seat"
-        def seatE1ZoneAA = new Seat(columnName: "A", rowAmount: 10, zone: e1ZoneA).save()
-//        println seatE1ZoneAA.seatCode
-        def seatE1ZoneAB = new Seat(columnName: "B", rowAmount: 10, zone: e1ZoneA).save()
-//        println seatE1ZoneAB.seatBitmap
-        def seatE1ZoneAC = new Seat(columnName: "C", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAD = new Seat(columnName: "D", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneAE = new Seat(columnName: "E", rowAmount: 10, zone: e1ZoneA).save()
-        def seatE1ZoneBA = new Seat(columnName: "A", rowAmount: 5, zone: e1ZoneB).save()
-        def seatE1ZoneBB = new Seat(columnName: "B", rowAmount: 10, zone: e1ZoneB).save()
-        def seatE1ZoneBC = new Seat(columnName: "C", rowAmount: 5, zone: e1ZoneB).save()
-        def seatE1ZoneBD = new Seat(columnName: "D", rowAmount: 10, zone: e1ZoneB).save()
+        def seatE1ZoneAA = new SeatMap(columnName: "A", rowAmount: 10, zone: e1ZoneA).save()
+//        for (i in 0..<seatE1ZoneAA.rowAmount) {
+//            new Seat(seatMap: seatE1ZoneAA).save()
+//        }
+
+        def seatE1ZoneAB = new SeatMap(columnName: "B", rowAmount: 10, zone: e1ZoneA)
+        seatE1ZoneAB.save()
+//        for (i in 0..<seatE1ZoneAB.rowAmount) {
+//            seatE1ZoneAB.addToSeats(new Seat(seatMap: seatE1ZoneAB))
+//        }
+
+        def seatE1ZoneAC = new SeatMap(columnName: "C", rowAmount: 10, zone: e1ZoneA)
+//        for (i in 0..<seatE1ZoneAC.rowAmount) {
+//            seatE1ZoneAC.addToSeats(new Seat(seatMap: seatE1ZoneAC))
+//        }
+        seatE1ZoneAC.save()
+
+        def seatE1ZoneAD = new SeatMap(columnName: "D", rowAmount: 10, zone: e1ZoneA)
+//        for (i in 0..<seatE1ZoneAD.rowAmount) {
+//            seatE1ZoneAD.addToSeats(new Seat(seatMap: seatE1ZoneAD))
+//        }
+        seatE1ZoneAD.save()
+
+        def seatE1ZoneAE = new SeatMap(columnName: "E", rowAmount: 10, zone: e1ZoneA)
+//        for (i in 0..<seatE1ZoneAE.rowAmount) {
+//            seatE1ZoneAE.addToSeats(new Seat(seatMap: seatE1ZoneAE))
+//        }
+        seatE1ZoneAE.save()
+
+        def seatE1ZoneBA = new SeatMap(columnName: "A", rowAmount: 5, zone: e1ZoneB)
+//        for (i in 0..<seatE1ZoneBA.rowAmount) {
+//            seatE1ZoneBA.addToSeats(new Seat(seatMap: seatE1ZoneBA))
+//        }
+        seatE1ZoneBA.save()
+
+        def seatE1ZoneBB = new SeatMap(columnName: "B", rowAmount: 10, zone: e1ZoneB)
+//        for (i in 0..<seatE1ZoneBB.rowAmount) {
+//            seatE1ZoneBB.addToSeats(new Seat(seatMap: seatE1ZoneBB))
+//        }
+        seatE1ZoneBB.save()
+
+        def seatE1ZoneBC = new SeatMap(columnName: "C", rowAmount: 5, zone: e1ZoneB)
+//        for (i in 0..<seatE1ZoneBC.rowAmount) {
+//            seatE1ZoneBC.addToSeats(new Seat(seatMap: seatE1ZoneBC))
+//        }
+        seatE1ZoneBC.save()
+
+        def seatE1ZoneBD = new SeatMap(columnName: "D", rowAmount: 10, zone: e1ZoneB)
+//        for (i in 0..<seatE1ZoneBD.rowAmount) {
+//            seatE1ZoneBD.addToSeats(new Seat(seatMap: seatE1ZoneBD))
+//        }
+        seatE1ZoneBD.save()
+
         println "after seat"
 
     }

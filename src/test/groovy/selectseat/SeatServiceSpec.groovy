@@ -1,9 +1,9 @@
 package selectseat
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class ZoneSeatSpec extends Specification implements DomainUnitTest<ZoneSeat> {
+class SeatServiceSpec extends Specification implements ServiceUnitTest<SeatService>{
 
     def setup() {
     }

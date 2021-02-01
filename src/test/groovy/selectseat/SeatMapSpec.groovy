@@ -3,7 +3,7 @@ package selectseat
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class PersonSpec extends Specification implements DomainUnitTest<Person> {
+class SeatMapSpec extends Specification implements DomainUnitTest<SeatMap> {
 
     def setup() {
     }

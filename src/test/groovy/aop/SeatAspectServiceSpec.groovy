@@ -1,9 +1,9 @@
-package redis
+package aop
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class ZoneSeatSpec extends Specification implements DomainUnitTest<ZoneSeat> {
+class SeatAspectServiceSpec extends Specification implements ServiceUnitTest<SeatAspectService>{
 
     def setup() {
     }

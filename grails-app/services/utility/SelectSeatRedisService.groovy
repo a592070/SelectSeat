@@ -2,8 +2,6 @@ package utility
 
 import grails.gorm.transactions.Transactional
 import grails.plugins.redis.RedisService
-import selectseat.Event
-import selectseat.Seat
 import selectseat.Zone
 
 @Transactional

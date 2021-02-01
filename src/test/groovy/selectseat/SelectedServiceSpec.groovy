@@ -1,9 +1,9 @@
 package selectseat
 
-import grails.testing.web.controllers.ControllerUnitTest
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class SeatControllerSpec extends Specification implements ControllerUnitTest<SeatController> {
+class SelectedServiceSpec extends Specification implements ServiceUnitTest<SelectedService>{
 
     def setup() {
     }

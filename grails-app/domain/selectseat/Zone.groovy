@@ -1,5 +1,7 @@
 package selectseat
 
+import utility.ToolService
+
 class Zone {
 /* Default (injected) attributes of GORM */
     Long id
@@ -12,7 +14,7 @@ class Zone {
     static final CODE_PREFIX = "Z"
 
     static belongsTo = [event: Event]
-    static hasMany = [seats: Seat]
+    static hasMany = [seatMap: SeatMap]
 
     static constraints = {
         name nullable: false
@@ -21,7 +23,11 @@ class Zone {
     }
 
     def beforeInsert(){
-        zoneCode = event.eventCode + CODE_PREFIX + (Zone.countByEvent(event)+1)
+        def tmpNo = event.eventCode + CODE_PREFIX + ToolService.generateRandomWord(5,true)
+        while(Zone.countByZoneCode(tmpNo) ){
+            tmpNo = event.eventCode + CODE_PREFIX +ToolService.generateRandomWord(5,true)
+        }
+        this.zoneCode = tmpNo
     }
 
 
