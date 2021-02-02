@@ -16,7 +16,7 @@
 
     <ul>
         <tr>
-            <td><li>${var.id},${var.price}, ${var.type}</li><g:link action="show" controller="Ticket" id="${var.id}">點我看看</g:link>
+            <td><li>${var.id},${var.price}, ${var.type}</li><g:link action="show" controller="Ticket" id="${var.id}">點我購買</g:link>
 
     </td>
         </tr>

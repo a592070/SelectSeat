@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<b>新世界</b>
+
 <div>${ticketDetial.type} 已加入排隊</div>
 </body>
 </html>

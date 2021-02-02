@@ -19,9 +19,11 @@
         </td>
     </tr>
     <tr>
-        <td><g:submitButton name="開始訂票"/></td>
+        <td><g:submitButton name="登入訂票系統"/></td>
     </tr>
 
 </g:form>
+<h3>${result}</h3>
+
 </body>
 </html>
