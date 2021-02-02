@@ -10,6 +10,7 @@ class DemoRedisController {
     def selectedService
     def demoService
     def seatService
+    def routingMQ
 
     def index() {
 //        def bitmap = [0,1,0,1,0,0,0,0,0,1,1,1,0,1,0] // 15
@@ -22,6 +23,9 @@ class DemoRedisController {
         println 'In DemoController.index()'
 //        demoService.serviceMethod()
         seatService.getColumnSeat(Zone.get(1).zoneCode, "A")
+
+        routingMQ.method1()
+
 
         render 'Hello World'
     }
