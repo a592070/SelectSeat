@@ -65,6 +65,7 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.47'
     compile 'org.grails.plugins:redis:2.0.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
 //    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.2.6.RELEASE'
 //    compile "org.grails.plugins:redis-gorm:6.0.4"
 

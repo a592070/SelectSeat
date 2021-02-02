@@ -1,16 +1,21 @@
 package selectseat.aop;
 
+import grails.plugins.redis.RedisService;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Aspect
-@Component
-public class SeatServiceAspect {
+//@Aspect
+//@Component
+public class DemoAspect {
+
+
     @Pointcut("execution(* selectseat.DemoRedisController.*(..))")
     public void point(){}
 
@@ -45,4 +50,13 @@ public class SeatServiceAspect {
 //    public void beforeMethod2(JoinPoint joinPoint){
 //        System.out.println("-- Before Method getColumnSeatPoint --");
 //    }
+
+
+    @Pointcut()
+    public void queryEmptySeat(Long eventId){}
+    @Around("queryEmptySeat(eventId)")
+    public void aroundQueryEmptySeat(Long eventId){
+
+
+    }
 }
