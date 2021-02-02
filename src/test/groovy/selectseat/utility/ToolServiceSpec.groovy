@@ -1,9 +1,9 @@
-package selectseat
+package selectseat.utility
 
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class TicketBookingServiceSpec extends Specification implements ServiceUnitTest<TicketBookingService>{
+class ToolServiceSpec extends Specification implements ServiceUnitTest<ToolService>{
 
     def setup() {
     }

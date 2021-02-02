@@ -1,6 +1,6 @@
 package selectseat
 
-import utility.ToolService
+import selectseat.utility.ToolService
 
 class Event {
 /* Default (injected) attributes of GORM */

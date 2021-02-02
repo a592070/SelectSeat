@@ -1,13 +1,24 @@
-//import org.springframework.amqp.core.BindingBuilder
-//import org.springframework.amqp.core.Queue
-//import org.springframework.amqp.core.TopicExchange
-//import org.springframework.amqp.rabbit.connection.ConnectionFactory
-//import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
-//import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter
+package spring
+
+import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator
 
 // Place your Spring DSL code here
 beans = {
-    xmlns aop:"http://www.springframework.org/schema/aop"
-    aop.config("proxy-target-class":true) {}
+    xmlns context: 'http://www.springframework.org/schema/context'
+//    context.'component-scan'( 'base-package' : 'selectseat' )
+//    autoProxyCreator(AnnotationAwareAspectJAutoProxyCreator) {
+//        proxyTargetClass = true
+//    }
+
+//    seatServiceAspect(selectseat.aop.SeatServiceAspect)
+//    xmlns aop:"http://www.springframework.org/schema/aop"
+//    aop{
+//        config("proxy-target-class":true) {
+//            aspect(id: "seatServiceAspect1", ref: "seatServiceAspect"){
+//                before method: "beforeMethod2",
+//                pointcut: "execution(* selectseat.SeatService.getColumnSeat(..)) && args(seatCode)"
+//            }
+//        }
+//    }
 
 }
