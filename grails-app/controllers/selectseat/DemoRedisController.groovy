@@ -22,7 +22,9 @@ class DemoRedisController {
 
         println 'In DemoController.index()'
 //        demoService.serviceMethod()
-        seatService.getColumnSeat(Zone.get(1).zoneCode, "A")
+
+        String seatCode = Zone.get(1).zoneCode + "SA"
+        seatService.getColumnSeat(seatCode)
 
         routingMQ.method1()
 

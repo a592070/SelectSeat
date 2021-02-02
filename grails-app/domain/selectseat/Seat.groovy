@@ -5,10 +5,15 @@ class Seat {
     Long version
 
     int status
+    int seatsIdx
 
     static belongsTo = [seatMap: SeatMap]
 
     static constraints = {
+        seatsIdx: insert: false
+    }
+    static mapping = {
+        seatsIdx column: "seats_idx", insertable: false, updateable: false
     }
 
     def beforeInsert(){

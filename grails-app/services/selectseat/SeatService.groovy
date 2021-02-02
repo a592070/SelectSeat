@@ -9,11 +9,14 @@ class SeatService {
     }
 
     List<Seat> getColumnSeat(String seatCode){
-        println seatCode
+        println "SeatService.getColumnSeat "+seatCode
         return SeatMap.findBySeatCode(seatCode).seats
     }
-    List<Seat> getColumnSeat(String zoneCode, String columnName){
-        String seatCode = "${zoneCode}S${columnName}"
-        return getColumnSeat(seatCode)
-    }
+//    List<Seat> getSeats(Long zoneId, String columnName){
+//        String seatCode = "${zoneCode}S${columnName}"
+//        return getColumnSeat(seatCode)
+//    }
+//    List<Seat> getSeats(String seatCode){
+//        return getColumnSeat(seatCode)
+//    }
 }
