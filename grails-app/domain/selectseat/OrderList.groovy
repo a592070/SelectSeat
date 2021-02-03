@@ -10,27 +10,26 @@ class OrderList {
     Date dateCreated
     Date lastUpdated
 
-    int totalNumber
+//    int totalNumber
     int totalPrice
-    String orderCode = "O00000"
-    String eventName
-    Event event
+    String orderCode
     String locationName
+
+    Event event
+    Location location
     User user
+//    Set orderDetails
 
     // location
-
     static belongsTo = [user: User]
     static hasMany = [orderDetails: OrderDetail]
 
-    static final String CODE_PREFIX = "O"
+    static final String CODE_PREFIX = "OR"
 
     static constraints = {
         orderCode nullable: false, unique: true
-        totalNumber nullable: false
+//        totalNumber nullable: false
         totalPrice nullable: false
-        eventName nullable: false
-        eventId nullable: false
         locationName nullable: false
     }
     def beforeInsert(){
@@ -39,5 +38,9 @@ class OrderList {
             tmpNo = CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
         this.orderCode = tmpNo
+    }
+
+    def getTotalNumber(){
+        return orderDetails.size()
     }
 }

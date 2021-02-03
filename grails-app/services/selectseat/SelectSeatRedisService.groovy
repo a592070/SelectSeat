@@ -80,4 +80,12 @@ class SelectSeatRedisService {
     }
 
 
+
+    def getTotalEmptySeat(Long eventId){
+
+    }
+
+
+
+
 }

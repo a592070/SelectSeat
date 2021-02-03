@@ -9,7 +9,11 @@ class Event {
 
     String eventCode
     String name
-    Date date
+    Date beginDate
+    Date endDate
+    Location location
+//    Set tickets
+
     // begin time
     // end time
     // def displayDate  // 2021/01/01 07:00~09:00
@@ -24,12 +28,13 @@ class Event {
 
     // gorm redis-gorm 開啟時需要額外標註map類型
 //    static mapWith = "hibernate"
-    static final String CODE_PREFIX = "E"
+    static final String CODE_PREFIX = "EV"
 
     static constraints = {
         eventCode nullable: true, unique: true
         name nullable: false
-        date nullable: true
+        beginDate nullable: true
+        endDate nullable: true
     }
 
     def beforeInsert(){
@@ -38,6 +43,18 @@ class Event {
             tmpNo = CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
         this.eventCode = tmpNo
+    }
+
+    String getDisplayDate(){
+        String sBeginDate = beginDate.format("yyyy/MM/dd/ HH:mm")
+        String sEndDate = endDate.format("yyyy/MM/dd/ HH:mm")
+        return sBeginDate + " - " + sEndDate.substring(sEndDate.lastIndexOf(" ")+1)
+    }
+    String getHashId(){
+        return ToolService.encodeHashid(Event, id)
+    }
+    Long getTotalEmptySeat(){
+        return 0
     }
 
 }

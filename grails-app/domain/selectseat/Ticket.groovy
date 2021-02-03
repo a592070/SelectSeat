@@ -9,25 +9,29 @@ class Ticket {
     Long version
 
     String type
-    int stock //移除
     int price
 
     final static String TYPE_ADULT_TICKET = "ADULT"
     final static String TYPE_HALF_TICKET = "HALF"
+    final static String TYPE_OTHER_TICKET = "OTHER"
 
-
+    Event event
     static belongsTo = [event: Event]
 
     static constraints = {
         type nullable: false, blank: false
-        stock nullable: false, blank: false
         price nullable: false, blank: false
     }
 
     // using i18n
     String getTypeName(String locale='*'){
-        if(type == TYPE_ADULT_TICKET){
-            return "全票"
+        switch (type){
+            case TYPE_ADULT_TICKET:
+                return "全票"
+            case TYPE_HALF_TICKET:
+                return "半票"
+            default:
+                return "其他"
         }
     }
 }

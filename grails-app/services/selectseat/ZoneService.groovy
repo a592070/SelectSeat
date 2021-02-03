@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component
 
 @CompileStatic
 interface IZoneService {
-    @Query("select count(1) from ${Seat} s, ${SeatMap} m where s.seatMap.id = m.id and s.status = 0 and m.zone.id = ${zoneId} group by m.zone.id")
-    Number countSeat(Long zoneId)
+//    @Query("select count(1) from ${Seat} s, ${SeatMap} m where s.seatMap.id = m.id and s.status = 0 and m.zone.id = ${zoneId} group by m.zone.id")
+//    Number countSeat(Long zoneId)
 }
 @Component
 @Transactional

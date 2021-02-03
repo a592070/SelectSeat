@@ -8,7 +8,7 @@ import org.grails.datastore.mapping.query.api.BuildableCriteria
 import org.hibernate.transform.Transformers
 
 interface ITicketDataService{
-    Ticket save(String type, int stock, int price)
+    Ticket save(String type, int price)
     Number count
     Ticket findById(Long id)
 }

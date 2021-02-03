@@ -1,6 +1,7 @@
 package selectseat.utility
 
 import grails.gorm.transactions.Transactional
+import org.hashids.Hashids
 
 @Transactional
 class ToolService {
@@ -31,5 +32,14 @@ class ToolService {
             randomWord.append((char)word[j]);
         }
         return randomWord.toString();
+    }
+
+    static String encodeHashid(clazz,id){
+        def hashidObj = new Hashids(clazz.name.replace('.',"_"),16)
+        return hashidObj.encode(id)
+    }
+    static long decodeHashid(clazz,hashid){
+        def hashidObj = new Hashids(clazz.name.replace('.',"_"),16)
+        return hashidObj.decode(hashid)[0]
     }
 }

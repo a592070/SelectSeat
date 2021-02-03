@@ -1,19 +1,10 @@
 package selectseat.booking
 
-import grails.gorm.services.Query
-import grails.gorm.services.Service
+
 import grails.gorm.transactions.Transactional
-import groovy.transform.CompileStatic
-import org.springframework.beans.factory.annotation.Autowire
-import org.springframework.stereotype.Component
 import selectseat.Event
-import selectseat.ILonginCheckService
-import selectseat.LonginCheckService
-import selectseat.Seat
-import selectseat.SeatMap
 import selectseat.User
 import selectseat.Zone
-import selectseat.ZoneService
 import selectseat.annotation.QueryEmptySeatAspect
 
 //@CompileStatic

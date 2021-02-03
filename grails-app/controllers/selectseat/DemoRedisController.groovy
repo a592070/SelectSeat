@@ -11,7 +11,6 @@ class DemoRedisController {
 
     static RedisService redisService
     def selectedService
-    def demoService
     def seatService
 //    @Autowired
 //    RoutingMQ routingMQ
@@ -50,7 +49,12 @@ class DemoRedisController {
 //                }
 //            }).start()
 //        }
-        render bookingService.searchEventZone("2")
+//        render bookingService.searchEventZone("2")
+
+        def order = OrderList.get(1)
+        println "=========="
+        def order1 = OrderDetail.countByOrder(order)
+        render order1
 
 //        render 'Hello World'
     }

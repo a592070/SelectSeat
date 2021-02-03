@@ -8,7 +8,10 @@ class Zone {
     Long version
 
     String name
-    int number
+
+    int columnCount
+    int rowCount
+    int totalSeat
 
     // column count
     // row count
@@ -18,15 +21,13 @@ class Zone {
 
 
     String zoneCode
-    static final CODE_PREFIX = "Z"
+    static final CODE_PREFIX = "ZO"
 
     Event event
     static belongsTo = [event: Event]
-    static hasMany = [seatMap: SeatMap]
 
     static constraints = {
         name nullable: false
-        number nullable: false
         zoneCode nullable: true, unique: true
     }
 
@@ -38,9 +39,14 @@ class Zone {
         this.zoneCode = tmpNo
     }
 
-    def countEmpty(){
-
+    int getEmptySeat(){
+        return 0
     }
+    String getHashId(){
+        return ""
+    }
+
+
 
 
 }

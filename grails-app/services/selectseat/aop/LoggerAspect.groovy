@@ -5,8 +5,8 @@ import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.springframework.stereotype.Component
 
-@Aspect
-@Component
+//@Aspect
+//@Component
 class LoggerAspect {
     //A more generic advice would be as below
     @Before("execution(* selectseat.DemoService.serviceMethod(..))")
