@@ -15,20 +15,21 @@ class FrontPageController {
 
         def eventByQuery = bookingService.searchEventsByQuery(query)
 
-
-        def list = eventByQuery.eventList
+        def eventList = eventByQuery.eventList
         def result = eventByQuery.result
         def events = eventByQuery.totalEvents
 
-        return [eventList:list,
+        return [eventList:eventList,
                 result: result,
                 totalEvents: events,
                 query: query
         ]
     }
 
-    def checkLogin(Long eventId){
-        render(view: 'byTicketLogin', model: [eventId:eventId])
+    def checkLogin(String eveId){
+        println eveId
+        def event = eveId
+        render(view: 'byTicketLogin', model: [eventId:event])
     }
 
 
@@ -36,10 +37,15 @@ class FrontPageController {
         def byEvent = bookingService.countUserTicketByEvent(user, eventId)
         def ticketNum = byEvent.ticketNum
         def exiting = bookingService.ifUserExiting(user)
-        return [ticketNum: ticketNum, exiting: exiting]
+        def event = Event.get(eventId)
+        def zoneByEvent = bookingService.searchEventZone(eventId)
+        def zoneList = zoneByEvent.zoneList
+//        return [ticketNum: ticketNum, exiting: exiting]
+        render(view: 'buyTicket', model: [ticketNum: ticketNum, exiting: exiting,eventResult: event, zoneList: zoneList])
     }
 
     def buyTicket(String eveId){
+        println eveId
         def event = Event.get(eveId)
         def zoneByEvent = bookingService.searchEventZone(eveId)
         def zoneList = zoneByEvent.zoneList

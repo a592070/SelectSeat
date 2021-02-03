@@ -10,6 +10,12 @@ class Event {
     String eventCode
     String name
     Date date
+    // begin time
+    // end time
+    // def displayDate  // 2021/01/01 07:00~09:00
+    // hashId
+    // def totalEmptySeat() // count by zone.emptySeat
+
 
 //    一個 site 有多個 event
     static belongsTo = [location: Location]

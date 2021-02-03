@@ -9,11 +9,11 @@ class Ticket {
     Long version
 
     String type
-    int stock
+    int stock //移除
     int price
 
-    final static String TYPE_ADULT_TICKET = "全票"
-    final static String TYPE_HALF_TICKET = "半票"
+    final static String TYPE_ADULT_TICKET = "ADULT"
+    final static String TYPE_HALF_TICKET = "HALF"
 
 
     static belongsTo = [event: Event]
@@ -22,5 +22,12 @@ class Ticket {
         type nullable: false, blank: false
         stock nullable: false, blank: false
         price nullable: false, blank: false
+    }
+
+    // using i18n
+    String getTypeName(String locale='*'){
+        if(type == TYPE_ADULT_TICKET){
+            return "全票"
+        }
     }
 }

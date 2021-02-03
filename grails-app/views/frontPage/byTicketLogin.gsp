@@ -15,7 +15,8 @@
 <g:form action="countUserTicketByEve">
     <tr>
         <td>
-            輸入會員 email：<g:textField name="user"/>
+            輸入會員 email：<g:textField name="user"/><br>
+            event: ${eventId}
             <g:hiddenField name="eventId" value="${eventId}"/>
         </td>
     </tr>

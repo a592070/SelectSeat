@@ -14,9 +14,11 @@ class OrderList {
     int totalPrice
     String orderCode = "O00000"
     String eventName
-    String eventId
+    Event event
     String locationName
     User user
+
+    // location
 
     static belongsTo = [user: User]
     static hasMany = [orderDetails: OrderDetail]
