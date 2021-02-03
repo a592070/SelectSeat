@@ -13,6 +13,7 @@ class Zone {
     String zoneCode
     static final CODE_PREFIX = "Z"
 
+    Event event
     static belongsTo = [event: Event]
     static hasMany = [seatMap: SeatMap]
 
@@ -28,6 +29,10 @@ class Zone {
             tmpNo = event.eventCode + CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
         this.zoneCode = tmpNo
+    }
+
+    def countEmpty(){
+
     }
 
 

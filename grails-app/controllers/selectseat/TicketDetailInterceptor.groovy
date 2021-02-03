@@ -7,6 +7,7 @@ import groovy.transform.CompileStatic
 class TicketDetailInterceptor {
 
     RabbitMessagePublisher rabbitMessagePublisher
+
     TicketDetailInterceptor(){
         match(controller: 'ticket', action: 'show')
     }

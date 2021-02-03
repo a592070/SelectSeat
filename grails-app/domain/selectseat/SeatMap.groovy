@@ -9,6 +9,7 @@ class SeatMap {
     String columnName
     int rowAmount
     String seatCode
+    Zone zone
 
     List<Seat> seats = []
 

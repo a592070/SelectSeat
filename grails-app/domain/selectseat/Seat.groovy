@@ -6,6 +6,7 @@ class Seat {
 
     int status
     int seatsIdx
+    SeatMap seatMap
 
     static belongsTo = [seatMap: SeatMap]
 
