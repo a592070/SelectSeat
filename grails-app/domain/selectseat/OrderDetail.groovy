@@ -7,11 +7,17 @@ class OrderDetail {
     /* Automatic timestamping of GORM */
     Date dateCreated
     Date lastUpdated
-
+//row
+//column
+//event_display date
+//zone
     String zoneName
     String seatCode
     String ticketType
     int ticketPrice
+    OrderList order
+
+    // ticket
 
     static belongsTo = [order: OrderList]
 

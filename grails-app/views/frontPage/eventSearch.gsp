@@ -18,8 +18,8 @@
     <g:each var="eve" in= "${eventList}">
         <tr>
             <ul>
-                <td><li>${eve.eventCode}, ${eve.name}</li></td>
-                <td><li><g:link action="buyTicket" controller="FrontPage" params="[eveId : eve.id ]">
+                <td><li>${eve.id} ${eve.eventCode}, ${eve.name}</li></td>
+                <td><li><g:link action="checkLogin" controller="FrontPage" params="[eveId : eve.id ]">
                     購票
                 </g:link></li></td>
             </ul>

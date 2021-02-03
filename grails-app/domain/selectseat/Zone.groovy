@@ -10,6 +10,13 @@ class Zone {
     String name
     int number
 
+    // column count
+    // row count
+    // total seat in zone
+    // def emptySeat()
+    //
+
+
     String zoneCode
     static final CODE_PREFIX = "Z"
 

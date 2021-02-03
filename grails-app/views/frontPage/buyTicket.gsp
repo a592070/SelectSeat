@@ -12,12 +12,12 @@
 </head>
 
 <body>
-
-活動名稱：${eventResult.name}
+${exiting}<br>
+您已購買 ${ticketNum} 張 ${eventResult.name} 節目之票卷 <br>
 
 <g:each var="zon" in="${zoneList}">
     <p>${zon.name}，<g:link action="countEmptySeat" controller="FrontPage" params="[zoneId : zon.id ]">
-        剩餘座位數
+        查詢座位 / 劃位
     </g:link>${emptySeat}</p>
 </g:each>
 
