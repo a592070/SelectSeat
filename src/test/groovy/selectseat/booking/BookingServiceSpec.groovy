@@ -1,4 +1,4 @@
-package booking
+package selectseat.booking
 
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification

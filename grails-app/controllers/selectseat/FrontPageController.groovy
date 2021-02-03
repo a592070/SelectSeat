@@ -1,6 +1,6 @@
 package selectseat
 
-import booking.BookingService
+import selectseat.booking.BookingService
 
 import java.awt.print.Book
 

@@ -16,9 +16,11 @@ class DemoRedisController {
 //    @Autowired
 //    RoutingMQ routingMQ
 
-    def messageQueueService
-    def dynamicRabbitMQService
-    RabbitTemplate rabbitTemplate
+//    def messageQueueService
+//    def dynamicRabbitMQService
+//    RabbitTemplate rabbitTemplate
+
+    def bookingService
 
     def index() {
 //        def bitmap = [0,1,0,1,0,0,0,0,0,1,1,1,0,1,0] // 15
@@ -39,16 +41,17 @@ class DemoRedisController {
 
 //        rabbitTemplate.convertAndSend("exchange01", "event.1", "你好我不好")
 
-        for (i in 0..<10) {
-            int num = i
-            new Thread(new Runnable() {
-                @Override
-                void run() {
-                    dynamicRabbitMQService.method1(1, "你好我不好"+Thread.currentThread().getName())
-                }
-            }).start()
-        }
+//        for (i in 0..<10) {
+//            int num = i
+//            new Thread(new Runnable() {
+//                @Override
+//                void run() {
+//                    dynamicRabbitMQService.method1(1, "你好我不好"+Thread.currentThread().getName())
+//                }
+//            }).start()
+//        }
+        render bookingService.searchEventZone("2")
 
-        render 'Hello World'
+//        render 'Hello World'
     }
 }
