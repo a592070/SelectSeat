@@ -14,7 +14,7 @@ interface ITicketDataService{
 }
 
 @Service(Ticket)
-abstract  class TicketBookingService implements ITicketDataService{
+abstract class TicketBookingService implements ITicketDataService{
 
     @CompileDynamic
     @ReadOnly

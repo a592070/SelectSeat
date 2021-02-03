@@ -1,6 +1,6 @@
 package selectseat
 
-import booking.BookingService
+import selectseat.booking.BookingService
 
 import java.awt.print.Book
 
@@ -34,5 +34,9 @@ class FrontPageController {
         return [eventResult: event, zoneList: zoneList]
     }
 
+    def countEmptySeat(Long zone){
+        def emptySeat = bookingService.countEmptySeat(zone)
+        render(emptySeat: emptySeat)
+    }
 
 }
