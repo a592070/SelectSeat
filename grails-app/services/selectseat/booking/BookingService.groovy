@@ -22,7 +22,7 @@ import selectseat.annotation.QueryEmptySeatAspect
 //}
 
 @Transactional
-//@Service(SeatMap)
+@Service
 class BookingService/* implements IBookingService*/{
     def zoneService
 
@@ -53,6 +53,6 @@ class BookingService/* implements IBookingService*/{
     def countEmptySeat(Long zoneId) {
         println this.getClass().getName()
         def seat = zoneService.countSeat(zoneId)
-        return [emptySeat: seat]
+        return seat
     }
 }

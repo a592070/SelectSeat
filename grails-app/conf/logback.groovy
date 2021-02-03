@@ -38,3 +38,7 @@ root(ERROR, ['STDOUT'])
 logger("org.hibernate.SQL", DEBUG, ["STDOUT"], false)
 logger ('org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT'], false)
 logger ('org.hibernate.engine.transaction.internal.TransactionImpl', DEBUG, ['STDOUT'], false)
+logger ('grails.plugins.redis.RedisService', DEBUG, ['STDOUT'], false)
+
+//debug 'grails.app.service'
+//debug 'org.codehaus.groovy.grails.plugins'

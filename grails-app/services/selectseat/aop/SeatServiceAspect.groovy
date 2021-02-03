@@ -1,21 +1,16 @@
 package selectseat.aop
 
-import grails.plugins.redis.RedisService
+
 import groovy.util.logging.Slf4j
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
-import org.aspectj.lang.annotation.After
-import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import redis.clients.jedis.Jedis
-import selectseat.Event
 import selectseat.SelectSeatRedisService
-import selectseat.Zone
 
 @Slf4j
 @Aspect
@@ -57,19 +52,28 @@ class SeatServiceAspect {
         println "======="+this.class.getName()+"=====joinPoint"+joinPoint.signature
 
 
-        if(selectSeatRedisService.existEmptySeat(zoneId)){
-            def seat = selectSeatRedisService.getEmptySeat(zoneId)
-            return [emptySeat: seat]
-        }else{
-            def proceed
-            try {
-                proceed = joinPoint.proceed(zoneId)
-                println "==="+proceed
-            }catch(Exception e){
-                e.printStackTrace()
+        def emptySeat = selectSeatRedisService.getEmptySeat(zoneId)
+        if(emptySeat == null){
+            // lock on
+            if(selectSeatRedisService.setEmptySeatMutexLock(zoneId)){
+                try {
+                    selectSeatRedisService.expireEmptySeatMutexLock(zoneId)
+
+                    // query from DB
+                    emptySeat = joinPoint.proceed(zoneId) as int
+
+                    selectSeatRedisService.setEmptySeat(zoneId, emptySeat, 60)
+                }catch(Exception e){
+                    e.printStackTrace()
+                }finally{
+                    selectSeatRedisService.delEmptySeatMutexLock(zoneId)
+                }
             }
-            return proceed
         }
+        selectSeatRedisService.setExpireEmptySeat(zoneId)
+        return emptySeat
+
+
 
 
 //        if(param1 == "1"){
