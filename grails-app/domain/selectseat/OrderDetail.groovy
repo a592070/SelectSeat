@@ -12,6 +12,7 @@ class OrderDetail {
     String seatCode
     String ticketType
     int ticketPrice
+    OrderList order
 
     static belongsTo = [order: OrderList]
 

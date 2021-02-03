@@ -14,7 +14,9 @@ class OrderList {
     int totalPrice
     String orderCode = "O00000"
     String eventName
+    String eventId
     String locationName
+    User user
 
     static belongsTo = [user: User]
     static hasMany = [orderDetails: OrderDetail]
@@ -26,6 +28,7 @@ class OrderList {
         totalNumber nullable: false
         totalPrice nullable: false
         eventName nullable: false
+        eventId nullable: false
         locationName nullable: false
     }
     def beforeInsert(){

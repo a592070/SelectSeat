@@ -26,11 +26,22 @@ class FrontPageController {
         ]
     }
 
+    def checkLogin(Long eventId){
+        render(view: 'byTicketLogin', model: [eventId:eventId])
+    }
+
+
+    def countUserTicketByEve(String user, Long eventId){
+        def byEvent = bookingService.countUserTicketByEvent(user, eventId)
+        def ticketNum = byEvent.ticketNum
+        def exiting = bookingService.ifUserExiting(user)
+        return [ticketNum: ticketNum, exiting: exiting]
+    }
+
     def buyTicket(String eveId){
         def event = Event.get(eveId)
         def zoneByEvent = bookingService.searchEventZone(eveId)
         def zoneList = zoneByEvent.zoneList
-
         return [eventResult: event, zoneList: zoneList]
     }
 
