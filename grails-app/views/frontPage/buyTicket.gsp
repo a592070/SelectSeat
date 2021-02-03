@@ -16,20 +16,11 @@
 活動名稱：${eventResult.name}
 
 <g:each var="zon" in="${zoneList}">
-    <p>${zon.name}，剩餘座位數</p>
+    <p>${zon.name}，<g:link action="countEmptySeat" controller="FrontPage" params="[zone : zon.id ]">
+        剩餘座位數
+    </g:link>${emptySeat}</p>
 </g:each>
 
-%{--<g:javascript>--}%
-%{--  function callMyAjax(){--}%
-%{--    $.ajax({--}%
-%{--      url:'${g.createLink( controller:'FrontPage', action:'getSeatAjax', params: 'zonId')}',--}%
-%{--      data:{--}%
-%{--           param1:param1,--}%
-%{--           param2:param2--}%
-%{--      }--}%
-%{--    });--}%
-%{--  }--}%
-%{--</g:javascript>--}%
 
 </body>
 

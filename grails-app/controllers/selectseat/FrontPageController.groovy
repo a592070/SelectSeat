@@ -34,5 +34,9 @@ class FrontPageController {
         return [eventResult: event, zoneList: zoneList]
     }
 
+    def countEmptySeat(Long zone){
+        def emptySeat = bookingService.countEmptySeat(zone)
+        render(emptySeat: emptySeat)
+    }
 
 }

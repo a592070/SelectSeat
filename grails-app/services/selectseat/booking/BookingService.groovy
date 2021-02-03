@@ -1,15 +1,24 @@
 package selectseat.booking
 
+import grails.gorm.services.Query
+import grails.gorm.services.Service
 import grails.gorm.transactions.Transactional
-import org.springframework.stereotype.Component
+import groovy.transform.CompileStatic
 import selectseat.Event
+import selectseat.Seat
+import selectseat.SeatMap
 import selectseat.Zone
-import selectseat.annotation.QueryEmptySeatAspect
+
+@CompileStatic
+interface IBookingService{
+
+    @Query("select count(1) from ${Seat} s, ${SeatMap} m where s.seatMap.id = m.id and s.status = 0 and m.zone.id = ${zone} group by m.zone.id")
+    Number countSeat(Long zone)
+}
 
 @Transactional
-class BookingService {
-
-    def seatServiceAspect
+@Service(SeatMap)
+abstract class BookingService implements IBookingService{
 
     def searchEventsByQuery(String query) {
         def eventList = Event.createCriteria().list {
@@ -22,7 +31,6 @@ class BookingService {
         ]
     }
 
-    @QueryEmptySeatAspect
     def searchEventZone(String eventId){
 //        def zoneList = Zone.createCriteria().list {
 //            eq("$event", "${eventId}")
@@ -30,17 +38,14 @@ class BookingService {
 
 //        def zoneList = Zone.findByEvent(Event.get(eventId))
         def zoneList = Zone.findAllByEvent(Event.get(eventId))
-//        def zoneList = []
 
         return [zoneList: zoneList]
 
     }
 
+   def countEmptySeat(Long zone) {
+       def seat = countSeat(zone)
 
-//    def beforeInterceptor = [action: this.&auth, except: 'searchEventZone']
-//// defined with private scope, so it's not considered an action
-//    private auth() {
-//        println "**********************"
-//    }
-
+       return [emptySeat: seat]
+   }
 }
