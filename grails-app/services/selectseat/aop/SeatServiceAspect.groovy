@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 import selectseat.Event
@@ -20,6 +21,7 @@ import selectseat.Zone
 @Aspect
 @Component
 class SeatServiceAspect {
+    @Autowired
     SelectSeatRedisService selectSeatRedisService;
 
     @Pointcut("execution(* selectseat.DemoRedisController.*(..))")
@@ -44,20 +46,35 @@ class SeatServiceAspect {
     @Pointcut("@annotation(selectseat.annotation.QueryEmptySeatAspect)")
     public void annotationQueryEmptySeat(){}
 
-    @Pointcut("execution(* *.*(..)) && args(param1)")
+    @Pointcut("execution(* *+.*(..)) && args(param1)")
     public void pointCutParam(Object param1){}
 
-    @Around("annotationQueryEmptySeat() && args(param1)")
-    def beforeQueryEmptySeat(ProceedingJoinPoint joinPoint, String param1){
+    @Around("annotationQueryEmptySeat() && args(zoneId)")
+//    @Around("annotationQueryEmptySeat() && pointCutParam(param1)")
+//    @Around("execution(* selectseat.booking.IBookingService+.countEmptySeat(..)) && args(zoneId)")
+    def beforeQueryEmptySeat(ProceedingJoinPoint joinPoint, Long zoneId){
+//        def zoneId = param1 as Long
         println "======="+this.class.getName()+"=====joinPoint"+joinPoint.signature
 
 
-//        if(selectSeatRedisService.existEmptySeat(param1)){
-//            return selectSeatRedisService.getEmptySeat(param1) as int
-//        }
+        if(selectSeatRedisService.existEmptySeat(zoneId)){
+            def seat = selectSeatRedisService.getEmptySeat(zoneId)
+            return [emptySeat: seat]
+        }else{
+            def proceed
+            try {
+                proceed = joinPoint.proceed(zoneId)
+                println "==="+proceed
+            }catch(Exception e){
+                e.printStackTrace()
+            }
+            return proceed
+        }
+
+
 //        if(param1 == "1"){
 //            println "query zone by eventId="+param1
-            joinPoint.proceed(param1)
+//            joinPoint.proceed(zoneId)
 //        }else{
 //            def zoneList = Zone.findAllByEvent(Event.get(Long.valueOf(param1)+1))
 //            return [zoneList: zoneList]

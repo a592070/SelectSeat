@@ -1,5 +1,6 @@
 package selectseat
 
+import selectseat.annotation.QueryEmptySeatAspect
 import selectseat.booking.BookingService
 
 import java.awt.print.Book
@@ -34,8 +35,9 @@ class FrontPageController {
         return [eventResult: event, zoneList: zoneList]
     }
 
-    def countEmptySeat(Long zone){
-        def emptySeat = bookingService.countEmptySeat(zone)
+    def countEmptySeat(Long zoneId){
+        def emptySeat = bookingService.countEmptySeat(zoneId)
+
         render(emptySeat: emptySeat)
     }
 

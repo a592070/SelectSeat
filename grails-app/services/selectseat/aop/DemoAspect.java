@@ -61,7 +61,8 @@ public class DemoAspect {
     public void aroundQueryEmptySeat(JoinPoint joinPoint, Long eventId){
     }
 
-    @Pointcut("@annotation(selectseat.annotation.QueryEmptySeatAspect)")
+//    @Pointcut("@annotation(selectseat.annotation.QueryEmptySeatAspect)")
+    @Pointcut("@target(selectseat.annotation.QueryEmptySeatAspect)")
     public void annotationQueryEmptySeat(){}
 
     @Pointcut("execution(* *.*(..)) && args(param1)")

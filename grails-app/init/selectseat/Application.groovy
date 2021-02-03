@@ -22,7 +22,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 
 //@ComponentScan(basePackages = "selectseat")
 @CompileStatic
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @SpringBootApplication
 @EnableRabbit
 class Application extends GrailsAutoConfiguration {

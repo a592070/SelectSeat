@@ -16,7 +16,7 @@
 活動名稱：${eventResult.name}
 
 <g:each var="zon" in="${zoneList}">
-    <p>${zon.name}，<g:link action="countEmptySeat" controller="FrontPage" params="[zone : zon.id ]">
+    <p>${zon.name}，<g:link action="countEmptySeat" controller="FrontPage" params="[zoneId : zon.id ]">
         剩餘座位數
     </g:link>${emptySeat}</p>
 </g:each>

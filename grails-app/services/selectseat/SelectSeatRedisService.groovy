@@ -1,9 +1,14 @@
 package selectseat
 
+import grails.gorm.services.Service
 import grails.gorm.transactions.Transactional
 import grails.plugins.redis.RedisService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 
+@Service
+@Component
 class SelectSeatRedisService {
 
     // EMPTY_SEAT_KEY + eventId
@@ -14,7 +19,7 @@ class SelectSeatRedisService {
     static final String ZONE_SEAT_FIELD = "SEAT_COLUMN_NAME_"
 
 
-
+    @Autowired
     RedisService redisService
 
     def serviceMethod() {
