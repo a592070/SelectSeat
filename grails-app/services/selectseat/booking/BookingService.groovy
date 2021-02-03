@@ -4,30 +4,27 @@ import grails.gorm.services.Query
 import grails.gorm.services.Service
 import grails.gorm.transactions.Transactional
 import groovy.transform.CompileStatic
+import org.springframework.stereotype.Component
 import selectseat.Event
-import selectseat.OrderDetail
-import selectseat.OrderList
 import selectseat.Seat
 import selectseat.SeatMap
-import selectseat.User
 import selectseat.Zone
+import selectseat.annotation.QueryEmptySeatAspect
 
-@CompileStatic
-interface IBookingService{
-
-    @Query("select count(1) from ${Seat} s, ${SeatMap} m where s.seatMap.id = m.id and s.status = 0 and m.zone.id = ${zone} group by m.zone.id")
-    Number countSeat(Long zone)
-
-    @Query("select count(1) from ${OrderList} ol, ${OrderDetail} od where ol.id = od.order.id and ol.user_id = ${query} and ol.eventId = ${eventId}group by ol.id")
-    Number countTicket(Long query,Long eventId)
-
-    @Query("select id from ${User} where email = ${userMail}")
-    def searchUser(String userMail)
-}
+//@CompileStatic
+//interface IBookingService{
+//
+//    @Query("select count(1) from ${Seat} s, ${SeatMap} m where s.seatMap.id = m.id and s.status = 0 and m.zone.id = ${zoneId} group by m.zone.id")
+//    Number countSeat(Long zoneId)
+//
+//    @QueryEmptySeatAspect
+//    def countEmptySeat(Long zoneId)
+//}
 
 @Transactional
-@Service(SeatMap)
-abstract class BookingService implements IBookingService{
+//@Service(SeatMap)
+class BookingService/* implements IBookingService*/{
+    def zoneService
 
     def searchEventsByQuery(String query) {
         def eventList = Event.createCriteria().list {
@@ -52,24 +49,10 @@ abstract class BookingService implements IBookingService{
 
     }
 
-   def countEmptySeat(Long zone) {
-       def seat = countSeat(zone)
-
-       return [emptySeat: seat]
-   }
-
-    def countUserTicketByEvent(String query, Long eventId){
-        def userId = searchUser(query)
-        def ticketNum = countTicket(userId, eventId)
-            return [ticketNum: ticketNum]
-    }
-
-    def ifUserExiting(String query){
-        def userResult = User.where{email =~ query}.get()
-        if(userResult){
-            return [userStatus: '歡迎 '+ query]
-        }else{
-            return [userStatus: '使用者不存在']
-        }
+    @QueryEmptySeatAspect
+    def countEmptySeat(Long zoneId) {
+        println this.getClass().getName()
+        def seat = zoneService.countSeat(zoneId)
+        return [emptySeat: seat]
     }
 }
