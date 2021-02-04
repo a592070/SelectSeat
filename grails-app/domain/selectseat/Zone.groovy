@@ -37,6 +37,7 @@ class Zone {
             tmpNo = event.eventCode + CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
         this.zoneCode = tmpNo
+        [[1,1],[2,1]]
     }
 
     int getEmptySeat(){
