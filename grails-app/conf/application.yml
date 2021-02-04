@@ -178,3 +178,9 @@ spring:
         password: admin
         host: localhost
         port: 5672
+mq:
+    seatSelectTimeoutDelayMessage:
+        exchange: "seat-select-exchange"
+        queue: "seat-select-queue"
+        key: "seat-select-key"
+

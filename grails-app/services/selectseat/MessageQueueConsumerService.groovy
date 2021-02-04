@@ -25,24 +25,24 @@ class MessageQueueConsumerService {
     }
 
 
-    @PostConstruct
-    def createQueue(){
-        Channel channel = rabbitContext.createChannel()
-        channel.exchangeDeclare(EXCHANGE_NAME, "topic", true)
-        def queue = channel.queueDeclare().getQueue()
-        channel.queueBind(queue, EXCHANGE_NAME, "")
-
-        def consumer = new DefaultConsumer(channel){
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope,
-                               AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String message = new String(body, "UTF-8");
-                println message
-                if(Objects.equals(message, null)){
-                    return
-                }
-            }
-        }
-        channel.basicConsume(queue, true, consumer)
-    }
+//    @PostConstruct
+//    def createQueue(){
+//        Channel channel = rabbitContext.createChannel()
+//        channel.exchangeDeclare(EXCHANGE_NAME, "topic", true)
+//        def queue = channel.queueDeclare().getQueue()
+//        channel.queueBind(queue, EXCHANGE_NAME, "")
+//
+//        def consumer = new DefaultConsumer(channel){
+//            @Override
+//            public void handleDelivery(String consumerTag, Envelope envelope,
+//                               AMQP.BasicProperties properties, byte[] body) throws IOException {
+//                String message = new String(body, "UTF-8");
+//                println message
+//                if(Objects.equals(message, null)){
+//                    return
+//                }
+//            }
+//        }
+//        channel.basicConsume(queue, true, consumer)
+//    }
 }

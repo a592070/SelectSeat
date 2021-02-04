@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import selectseat.SelectSeatRedisService
+import selectseat.redis.SelectSeatRedisService
 
 @Slf4j
 @Aspect
