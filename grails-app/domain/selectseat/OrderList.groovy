@@ -18,8 +18,8 @@ class OrderList {
     Event event
     Location location
     User user
-
-    static belongsTo = [user: User]
+    Set<OrderDetail> orderDetails
+    static belongsTo = [user: User, event:Event, location:Location]
     static hasMany = [orderDetails: OrderDetail]
 
     static final String CODE_PREFIX = "OR"

@@ -23,9 +23,11 @@ class Event {
 
 
 //    一個 site 有多個 event
+    Set<Zone> zones
+    Set<Ticket> tickets
     static belongsTo = [location: Location]
 
-    static hasMany = [tickets: Ticket]
+    static hasMany = [tickets: Ticket, zones:Zone]
 
     // gorm redis-gorm 開啟時需要額外標註map類型
 //    static mapWith = "hibernate"

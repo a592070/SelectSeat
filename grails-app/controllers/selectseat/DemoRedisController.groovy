@@ -114,7 +114,15 @@ class DemoRedisController {
 //        println tmp.lastIndexOf("_COL:")
 //        println tmp.split("_")
 
-        println Ticket.get(1).getTypeName()
+//        println Ticket.get(1).getTypeName()
+
+        def seat = selectSeatRedisService.countZoneEmptySeat([11, 99, 9])
+        def seat1 = selectSeatRedisService.countZoneEmptySeat([11])
+        def seat2 = selectSeatRedisService.countZoneEmptySeat([99])
+        def seat3 = selectSeatRedisService.countZoneEmptySeat([9])
+        println "${seat} = ${seat1}+${seat2}+${seat3}"
+
+
         render new Date().format("yyyy/MM/dd HH:mm:ss")+"=======send Message"
 
 //        render 'Hello World'
