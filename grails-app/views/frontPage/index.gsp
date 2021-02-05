@@ -9,11 +9,14 @@
 <html>
 <head>
     <title>Front page</title>
+
 </head>
 
-<body>
+<body onload="">
+
 <g:link url="[action: 'init', controller: 'frontPage']"> insert</g:link>
 <br>
+
 <g:form action="eventSearch">
     <tr>
         <td>
@@ -24,6 +27,8 @@
         <td><g:submitButton name="查詢"/></td>
     </tr>
 
-</g:form>
+</g:form><br>
+
+
 </body>
 </html>

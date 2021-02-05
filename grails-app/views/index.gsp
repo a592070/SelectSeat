@@ -54,6 +54,7 @@
         <h3 style="text-align: center"><g:link url="[action: 'index', controller: 'frontPage']">活動查詢</g:link></h3>
     <br>
         <h3 style="text-align: center"><g:link url="[action: 'index', controller: 'loginPage']">訂票紀錄查詢</g:link></h3>
+        <h3 style="text-align: center"><g:link url="[action: 'create', controller: 'event']">新增活動</g:link></h3>
 
     <section class="row colset-2-its">
         <h1>Welcome to Grails</h1>
