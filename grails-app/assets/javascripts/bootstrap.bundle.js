@@ -2442,11 +2442,11 @@
    * @private
    */
   function setupEventListeners(reference, options, state, updateBound) {
-    // Resize event listener on window
+    // Resize event selectseat.listener on window
     state.updateBound = updateBound;
     getWindow(reference).addEventListener('resize', state.updateBound, { passive: true });
 
-    // Scroll event listener on scroll parents
+    // Scroll event selectseat.listener on scroll parents
     var scrollElement = getScrollParent(reference);
     attachToScrollParents(scrollElement, 'scroll', state.updateBound, state.scrollParents);
     state.scrollElement = scrollElement;
@@ -2474,10 +2474,10 @@
    * @private
    */
   function removeEventListeners(reference, state) {
-    // Remove resize event listener on window
+    // Remove resize event selectseat.listener on window
     getWindow(reference).removeEventListener('resize', state.updateBound);
 
-    // Remove scroll event listener on scroll parents
+    // Remove scroll event selectseat.listener on scroll parents
     state.scrollParents.forEach(function (target) {
       target.removeEventListener('scroll', state.updateBound);
     });
@@ -3885,7 +3885,7 @@
       /**
        * Collection of utilities useful when writing custom modifiers.
        * Starting from version 1.7, this method is available only if you
-       * include `popper-utils.js` before `popper.js`.
+       * include `popper-selectseat.utils.js` before `popper.js`.
        *
        * **DEPRECATION**: This way to access PopperUtils is deprecated
        * and will be removed in v2! Use the PopperUtils module directly instead.

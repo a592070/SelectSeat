@@ -1,6 +1,7 @@
 package selectseat
 
 import grails.compiler.GrailsCompileStatic
+import org.grails.plugins.localization.Localization
 
 @GrailsCompileStatic
 class Ticket {
@@ -12,7 +13,7 @@ class Ticket {
     int price
 
     final static String TYPE_ADULT_TICKET = "ADULT"
-    final static String TYPE_HALF_TICKET = "HALF"
+    final static String TYPE_CONCESSION_TICKET = "CONCESSION"
     final static String TYPE_OTHER_TICKET = "OTHER"
 
     Event event
@@ -25,13 +26,6 @@ class Ticket {
 
     // using i18n
     String getTypeName(String locale='*'){
-        switch (type){
-            case TYPE_ADULT_TICKET:
-                return "全票"
-            case TYPE_HALF_TICKET:
-                return "半票"
-            default:
-                return "其他"
-        }
+        return Localization.getMessage("ticket.type."+type, locale)
     }
 }
