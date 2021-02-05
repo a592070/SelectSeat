@@ -18,6 +18,9 @@
     td:hover {
         background-color: #f1b0b7;
     }
+    .act{
+        background-color: #6c757d;
+    }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -62,8 +65,8 @@
 
     <button type="button" onclick="createTable()">生成座位選擇表</button>
     <br>
-    <label>已設定無法販售之座位</label>
-    <g:field name="clickRecord" type="text" readonly=""/>
+%{--    <label>已設定無法販售之座位</label>--}%
+%{--    <g:field name="clickRecord" type="text" readonly=""/>--}%
     <br><br>
 
     <div id="liRegion"></div>
@@ -83,7 +86,7 @@
         if (!rowCount) {
             rowCount = 1
         }
-        var text = '<table style="background-color: #dddddd">'
+        var text = '<table id="foo">'
         for (var i = 1; i <= columnCount; i++) {
             text += `<tr>`
             for (var j = 1; j <= rowCount; j++) {
@@ -93,6 +96,10 @@
         }
         text += '</table>'
         document.getElementById('liRegion').innerHTML = des + text;
+
+        $("#liRegion td").click(function() {
+            $(this).toggleClass("act");
+        });
     }
 
     function choose(obj) {
@@ -102,13 +109,27 @@
         // console.log(obj.getAttribute('colIdx'))
 
         // console.log(obj['rowIdx'])
+
+        console.log(clickSeat)
+        var ifExist = seats.indexOf(clickSeat)
+        console.log(ifExist)
+        if (ifExist>-1){
+            // seats.splice(ifExist, 1)
+            console.log("d")
+        }else{
+
         seats.push(clickSeat)
+        console.log(seats)
+
+        }
         // console.log(seats)
         // alert(seats)
         // document.getElementById('clickRecord').innerHTML= seats.toString();
         // document.getElementById('clickRecord').innerHTML= `<input type="text" id="clickRecord" value="`+seats+`">`;
         $('#clickRecord').val(seats);
     }
+
+
 
 </g:javascript>
 

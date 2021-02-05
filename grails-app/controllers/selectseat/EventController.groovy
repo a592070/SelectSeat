@@ -22,9 +22,9 @@ class EventController {
         def beginDate = params.date('beginDate', 'MM/dd/yyyy')
         def endDate = params.date('endDate', 'MM/dd/yyyy')
         def totalSeat = params.int('columnCount')*params.int('rowCount')
-
         def event = eventService.saveEvent(params.eventName.toString(), beginDate, endDate, params.long('location'))
         eventService.saveZone(params.zone.toString(), params.int('columnCount'), params.int('rowCount'), totalSeat, event.id)
         render 'SUCCESS!'
+
     }
 }
