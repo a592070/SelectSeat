@@ -1,27 +1,26 @@
 package selectseat
 
+import org.springframework.beans.factory.annotation.Autowired
+import selectseat.redis.SelectSeatRedisService
 import selectseat.utility.ToolService
 
+import javax.persistence.Transient
+
 class Zone {
-/* Default (injected) attributes of GORM */
+    static final CODE_PREFIX = "ZO"
+
+    Map<String, String>seats
+    def selectSeatRedisService
+    static transients = ['seats', 'selectSeatRedisService']
+
+
     Long id
     Long version
-
     String name
-
     int columnCount
     int rowCount
     int totalSeat
-
-    // column count
-    // row count
-    // total seat in zone
-    // def emptySeat()
-    //
-
-
     String zoneCode
-    static final CODE_PREFIX = "ZO"
 
     Event event
     static belongsTo = [event: Event]
@@ -37,14 +36,22 @@ class Zone {
             tmpNo = event.eventCode + CODE_PREFIX +ToolService.generateRandomWord(5,true)
         }
         this.zoneCode = tmpNo
-        [[1,1],[2,1]]
     }
 
-    int getEmptySeat(){
-        return 0
+    def afterLoad(){
+        this.seats = selectSeatRedisService.getZoneSeats(this)
     }
+
+
     String getHashId(){
-        return ""
+        return ToolService.encodeHashid(Zone, id)
+    }
+
+    Map<String, String> getSeats(){
+        return this.seats
+    }
+    void setSeats(Map<String, String> redisSeats){
+        this.seats = redisSeats
     }
 
 

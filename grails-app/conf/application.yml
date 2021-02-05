@@ -4,10 +4,6 @@ grails:
     codegen:
         defaultPackage: selectseat
     gorm:
-        default:
-            mapping:
-                autowire: true
-                failOnError: true
         reactor:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
@@ -88,6 +84,9 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+    gorm:
+        autowire: true
+        failOnError: true
     redis:
         host: "localhost"
         port: 6379
@@ -122,8 +121,8 @@ dataSource:
     url: jdbc:mysql://127.0.0.1:3306/select_seat_db
     dbCreate: update
     username: root
-#    password: '53434976'
-    password: '42760988'
+    password: '53434976'
+#    password: '42760988'
     properties:
         maxActive: 15
         initialSize: 5

@@ -27,14 +27,17 @@ class SelectSeatRedisService {
 //    static final String MUTEX_LOCK_OFF_LOCK = "0"
 
     // ZONE_SEAT_KEY + zoneId : {
-    //      ZONE_SEAT_FIELD_ROW_INDEX + rowIndex + ZONE_SEAT_FIELD_COLUMN_INDEX + colIndex : status
+    //      ZONE_SEAT_FIELD_ROW_INDEX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_INDEX + colIndex : status
+    //      rowIndex + ZONE_SEAT_FIELD_INTERPOINT + colIndex : status
     //      }
     // ZONE:01 = {
-    //      ROW:01COL:01 = 0
+    //      ROW:01_COL:01 = 0
+    //      01_01 = 0
     // }
     static final String ZONE_SEAT_KEY_PREFIX = "ZONE:"
     static final String ZONE_SEAT_FIELD_ROW_PREFIX =  "ROW:"
-    static final String ZONE_SEAT_FIELD_COLUMN_PREFIX = "_COL:"
+    static final String ZONE_SEAT_FIELD_COLUMN_PREFIX = "COL:"
+    static final String ZONE_SEAT_FIELD_INTERPOINT = "_"
     static final String ZONE_SEAT_VALUE_DISABLED = "DISABLED"
     static final String ZONE_SEAT_VALUE_EMPTY = "0"
     static final String ZONE_SEAT_VALUE_RESERVED = "1"
@@ -115,12 +118,12 @@ class SelectSeatRedisService {
 
     }
 
-    def initZoneSeatValue(Zone zone, List<List> disableSeat=[]){
+    def setZoneSeats(Zone zone, Set<List<Integer>> disableSeat){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
-        def map = [:]
+        Map<String, String> map = [:]
         for (i in 0..<zone.rowCount) {
             for (j in 0..<zone.columnCount) {
-                String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
+                String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
                 String fieldValue = ZONE_SEAT_VALUE_EMPTY
                 if([i,j] in disableSeat) fieldValue = "DISABLED"
                 map.put(fieldName, fieldValue)
@@ -129,7 +132,17 @@ class SelectSeatRedisService {
         redisService.withTransaction { Transaction transaction ->
             transaction.hmset(zoneKey, map as Map<String, String>)
         }
+        return map
     }
+    Map<String, String> getZoneSeats(Zone zone){
+        String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
+        Map<String, String> map = [:]
+        redisService.withRedis { Jedis jedis ->
+            map = jedis.hgetAll(zoneKey)
+        }
+        return map
+    }
+
     def countZoneEmptySeat(Long zoneId){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
         redisService.withRedis { Jedis jedis ->
@@ -142,8 +155,8 @@ class SelectSeatRedisService {
     }
     def incrZoneSeat(Long zoneId, int rowIndex, int colIndex){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
-        String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex
-        String fieldName1 = ZONE_SEAT_FIELD_ROW_PREFIX + 0 + ZONE_SEAT_FIELD_COLUMN_PREFIX + 2
+        String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex
+        String fieldName1 = ZONE_SEAT_FIELD_ROW_PREFIX + 0 + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + 2
 
 
         redisService.withRedis { Jedis redis ->

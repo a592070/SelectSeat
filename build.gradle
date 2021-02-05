@@ -24,6 +24,8 @@ apply plugin:"org.grails.grails-gsp"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://nexus.fontrip.com/repository/maven-snapshots/" }
+
 }
 
 dependencies {
@@ -62,10 +64,12 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:2.47.1"
 
 
+    compile "com.fontrip:itri-localizations:3.3.0-SNAPSHOT"
     compile 'mysql:mysql-connector-java:5.1.47'
     compile 'org.grails.plugins:redis:2.0.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 //    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.2.6.RELEASE'
 //    compile "org.grails.plugins:redis-gorm:6.0.4"
 

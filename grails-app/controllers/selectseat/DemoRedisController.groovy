@@ -91,8 +91,30 @@ class DemoRedisController {
 //        selectSeatRedisService.initZoneSeatValue(zone, disabledSeat)
 
 //        println selectSeatRedisService.countZoneEmptySeat(99)
-        selectSeatRedisService.incrZoneSeat(99, 1, 2)
+//        selectSeatRedisService.incrZoneSeat(99, 1, 2)
 
+
+        def map = [
+                "2-0":1, "2-1":0, "2-2":0, "2-3":0,
+                "0-0":1, "0-1":0, "0-3":0, "0-2":0,
+                "1-3":1, "1-2":0, "1-1":0, "1-0":0,
+        ]
+//        def map = [
+//                "0-0":1, "0-1":0, "0-2":0, "0-3":0,
+//                "1-0":1, "1-1":0, "1-2":0, "1-3":0,
+//                "2-0":1, "2-1":0, "2-2":0, "2-3":0,
+//        ]
+
+
+//        def seats = Zone.get(11).getSeats()
+//        println seats
+
+//        String tmp = "ROW:01_COL:01"
+//        println tmp.lastIndexOf("ROW:")
+//        println tmp.lastIndexOf("_COL:")
+//        println tmp.split("_")
+
+        println Ticket.get(1).getTypeName()
         render new Date().format("yyyy/MM/dd HH:mm:ss")+"=======send Message"
 
 //        render 'Hello World'

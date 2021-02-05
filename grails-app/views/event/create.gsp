@@ -97,7 +97,7 @@
 
     function choose(obj) {
         // var clickSeat = document.getElementById(index).innerText
-        var clickSeat = [obj.getAttribute('rowIdx'), obj.getAttribute('colIdx')]
+        var clickSeat = [parseInt(obj.getAttribute('rowIdx'), 10), parseInt(obj.getAttribute('colIdx'), 10)]
         // console.log(obj.getAttribute('rowIdx'))
         // console.log(obj.getAttribute('colIdx'))
 
@@ -107,7 +107,7 @@
         // alert(seats)
         // document.getElementById('clickRecord').innerHTML= seats.toString();
         // document.getElementById('clickRecord').innerHTML= `<input type="text" id="clickRecord" value="`+seats+`">`;
-        $('#clickRecord').val(seats);
+        $('#clickRecord').val(JSON.stringify(seats));
     }
 
 </g:javascript>

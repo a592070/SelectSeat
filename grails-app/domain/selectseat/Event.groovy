@@ -1,5 +1,6 @@
 package selectseat
 
+import org.springframework.context.MessageSource
 import selectseat.utility.ToolService
 
 class Event {

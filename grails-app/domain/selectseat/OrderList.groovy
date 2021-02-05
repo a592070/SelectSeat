@@ -18,9 +18,7 @@ class OrderList {
     Event event
     Location location
     User user
-//    Set orderDetails
 
-    // location
     static belongsTo = [user: User]
     static hasMany = [orderDetails: OrderDetail]
 
@@ -28,7 +26,6 @@ class OrderList {
 
     static constraints = {
         orderCode nullable: false, unique: true
-//        totalNumber nullable: false
         totalPrice nullable: false
         locationName nullable: false
     }
