@@ -69,6 +69,9 @@ dependencies {
     compile 'org.grails.plugins:redis:2.0.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-redisson'
+    compile 'org.redisson:redisson-spring-data-18:3.15.0'
+    compile 'org.redisson:redisson-spring-boot-starter:3.15.0'
 //    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 //    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.2.6.RELEASE'
 //    compile "org.grails.plugins:redis-gorm:6.0.4"

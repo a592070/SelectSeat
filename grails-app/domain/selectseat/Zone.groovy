@@ -49,9 +49,9 @@ class Zone {
     Map<String, String> getSeats(){
         this.seats = selectSeatRedisService.getZoneSeats(this)
     }
-    void setSeats(Map<String, String> redisSeats){
-        this.seats = redisSeats
-    }
+//    void setSeats(Map<String, String> redisSeats){
+//        this.seats = redisSeats
+//    }
 
 
 

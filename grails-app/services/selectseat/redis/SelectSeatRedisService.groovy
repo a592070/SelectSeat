@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisMonitor
-import redis.clients.jedis.Pipeline
-import redis.clients.jedis.Response
 import redis.clients.jedis.Transaction
-import selectseat.Event
 import selectseat.Zone
 
 @Service
@@ -40,10 +37,15 @@ class SelectSeatRedisService {
     static final String ZONE_SEAT_FIELD_ROW_PREFIX =  "ROW:"
     static final String ZONE_SEAT_FIELD_COLUMN_PREFIX = "COL:"
     static final String ZONE_SEAT_FIELD_INTERPOINT = "_"
-    static final String ZONE_SEAT_VALUE_DISABLED = "DISABLED"
-    static final String ZONE_SEAT_VALUE_EMPTY = "0"
-    static final String ZONE_SEAT_VALUE_RESERVED = "1"
+    static final String ZONE_SEAT_VALUE_DISABLED = Byte.MIN_VALUE
+    static final String ZONE_SEAT_VALUE_EMPTY = 0
+    static final String ZONE_SEAT_VALUE_RESERVED = 1
 //    static final String ZONE_SEAT_VALUE_ = ""
+
+    static final String INDEX_ZONE_KEY_PREFIX = "INDEX:ZONE:"
+    static final String SELECTOR_USR_KEY_PREFIX = "SELECTOR:USR:"
+    static final String MUTEX_LOCK_ZONE_KEY_PREFIX = "MUTEX_LOCK_ZONE:"
+
 
 
 
@@ -59,13 +61,29 @@ class SelectSeatRedisService {
 
     def setnxMutexLock(String lockKey){
         redisService.withRedis { Jedis jedis ->
-            return jedis.setnx(MUTEX_LOCK+lockKey, MUTEX_LOCK_ON_LOCK)
+            return jedis.setnx(lockKey, MUTEX_LOCK_ON_LOCK)
         }
     }
+    def releaseMutexLock(String lockKey){
+        deleteKey(lockKey)
+    }
+
+    def withLock(String lockKey, Closure closure){
+        try{
+            while(setnxMutexLock(lockKey) != 0){
+                Thread.sleep(50)
+            }
+            closure()
+        }catch(Exception e){
+            e.printStackTrace()
+        }finally{
+            releaseMutexLock(lockKey)
+        }
+    }
+
     def expireMutexLock(String lockKey, int timeout){
         redisService.withRedis { Jedis jedis ->
             jedis.expire(MUTEX_LOCK+lockKey, timeout)
-            jedis.subscribe()
         }
         new JedisMonitor() {
             @Override
@@ -84,18 +102,29 @@ class SelectSeatRedisService {
 
     Map<String, String> setZoneSeats(Zone zone, Set<List<Integer>> disableSeat){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
+        String zoneIndexKey = INDEX_ZONE_KEY_PREFIX + zone.id
+
         Map<String, String> map = [:]
-        for (i in 0..<zone.rowCount) {
-            for (j in 0..<zone.columnCount) {
-                String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
-                String fieldValue = ZONE_SEAT_VALUE_EMPTY
-                if([i,j] in disableSeat) fieldValue = "DISABLED"
-                map.put(fieldName, fieldValue)
+
+        String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + zone.id
+
+        withLock(lockKey, {
+            redisService.withTransaction { Transaction transaction ->
+//            transaction.hmset(zoneKey, map as Map<String, String>)
+                for (i in 0..<zone.rowCount) {
+                    for (j in 0..<zone.columnCount) {
+                        String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
+                        String fieldValue = ZONE_SEAT_VALUE_EMPTY
+                        if([i,j] in disableSeat) fieldValue = ZONE_SEAT_VALUE_DISABLED
+
+                        map.put(fieldName, fieldValue)
+
+                        transaction.hset(zoneKey, fieldName, fieldValue)
+                        transaction.zadd(zoneIndexKey, Integer.valueOf(fieldValue), fieldName)
+                    }
+                }
             }
-        }
-        redisService.withTransaction { Transaction transaction ->
-            transaction.hmset(zoneKey, map as Map<String, String>)
-        }
+        })
         return map
     }
     Map<String, String> getZoneSeats(Zone zone){
@@ -107,50 +136,38 @@ class SelectSeatRedisService {
         return map
     }
 
-    int countZoneEmptySeat(List<Long> zoneId){
-        int totalEmptySeat
-        List<Response<Map<String, String>>> tmp = []
-        redisService.withTransaction { Transaction redis ->
-            zoneId.each {
-                tmp << redis.hgetAll(ZONE_SEAT_KEY_PREFIX + it)
+    Long countZoneEmptySeat(Long zoneId){
+        Long count = 0
+
+        redisService.withRedis { Jedis redis ->
+            count = redis.zcount(INDEX_ZONE_KEY_PREFIX + zoneId, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
+        }
+        return count
+    }
+//    Long countEventEmptySeat(Event event){
+//        return event.zones.count {
+//            countZoneEmptySeat(it.id)
+//        }
+//    }
+
+    Set<String> getZoneEmptySeats(Long zoneId){
+        def emptySeat = []
+
+        String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + zoneId
+        withLock(lockKey, {
+            redisService.withRedis { Jedis redis ->
+                emptySeat = redis.zrangeByScore(INDEX_ZONE_KEY_PREFIX + zoneId, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
             }
-        }
-        tmp.each {
-            totalEmptySeat += it.get().count {it.value == ZONE_SEAT_VALUE_EMPTY}
-        }
-        return totalEmptySeat
-    }
-
-    int countEventEmptySeat(Event event){
-        def zoneIds = event.zones.collect {
-            it.id
-        }
-        return countZoneEmptySeat(zoneIds)
-    }
-
-    def getZoneEmptySeat(Long zoneId){
-
+        })
+        return emptySeat
     }
 
 
-    def incrZoneSeat(Long zoneId, int rowIndex, int colIndex){
-        String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
+    def setUserSelectSeat(Long userId, Long zoneId, int rowIndex, int colIndex){
+        String selectorUserKey = SELECTOR_USR_KEY_PREFIX + userId
         String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex
         String fieldName1 = ZONE_SEAT_FIELD_ROW_PREFIX + 0 + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + 2
 
-
-        redisService.withRedis { Jedis redis ->
-
-            println fieldName
-            def f1 = redis.hincrBy(zoneKey, fieldName, 1)
-            println f1
-
-            println fieldName1
-            def f2 = redis.hincrBy(zoneKey, fieldName1, 1)
-            println f2
-
-            if(f1 != ZONE_SEAT_VALUE_RESERVED && f2 != ZONE_SEAT_VALUE_RESERVED) throw new Exception("不符合")
-        }
     }
 
 
