@@ -5,6 +5,7 @@ class User {
     Long version
 
     String email
+    Set<OrderList> orders
     static hasMany = [orders:OrderList]
 
     static constraints = {

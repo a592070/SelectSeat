@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisMonitor
 import redis.clients.jedis.Pipeline
+import redis.clients.jedis.Response
 import redis.clients.jedis.Transaction
+import selectseat.Event
 import selectseat.Zone
 
 @Service
@@ -54,30 +56,6 @@ class SelectSeatRedisService {
         }
     }
 
-    def existEmptySeat(Long zoneId){
-        redisService.withRedis { Jedis jedis ->
-            return jedis.exists(EMPTY_SEAT_KEY+zoneId)
-        }
-    }
-    def getEmptySeat(Long zoneId){
-        redisService.withRedis { Jedis jedis ->
-            return jedis.get(EMPTY_SEAT_KEY+zoneId)
-        }
-    }
-
-    def setEmptySeat(Long zoneId, int emptySeat, int timeout=30){
-        redisService.withRedis { Jedis jedis ->
-//            return jedis.set(EMPTY_SEAT_KEY+zoneId, "${emptySeat}", "NX", "EX", 30)
-            return jedis.setex(EMPTY_SEAT_KEY+zoneId, timeout, "${emptySeat}")
-        }
-    }
-
-
-    def setExpireEmptySeat(Long zoneId, int timeout=30){
-        redisService.withRedis { Jedis jedis ->
-            jedis.expire(EMPTY_SEAT_KEY+zoneId, timeout)
-        }
-    }
 
     def setnxMutexLock(String lockKey){
         redisService.withRedis { Jedis jedis ->
@@ -102,23 +80,9 @@ class SelectSeatRedisService {
 
 
 
-    def setEmptySeatMutexLock(Long zoneId){
-        return setnxMutexLock(EMPTY_SEAT_KEY+zoneId)
-    }
-    def expireEmptySeatMutexLock(Long zoneId, int timeout = 1*60){
-        expireMutexLock(EMPTY_SEAT_KEY+zoneId, timeout)
-    }
-    def delEmptySeatMutexLock(Long zoneId){
-        delMutexLock(EMPTY_SEAT_KEY+zoneId)
-    }
 
 
-
-    def getTotalEmptySeat(Long eventId){
-
-    }
-
-    def setZoneSeats(Zone zone, Set<List<Integer>> disableSeat){
+    Map<String, String> setZoneSeats(Zone zone, Set<List<Integer>> disableSeat){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
         Map<String, String> map = [:]
         for (i in 0..<zone.rowCount) {
@@ -143,16 +107,31 @@ class SelectSeatRedisService {
         return map
     }
 
-    def countZoneEmptySeat(Long zoneId){
-        String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
-        redisService.withRedis { Jedis jedis ->
-            Map<String, String> map = jedis.hgetAll(zoneKey)
-            return map.count { it.value == ZONE_SEAT_VALUE_EMPTY }
+    int countZoneEmptySeat(List<Long> zoneId){
+        int totalEmptySeat
+        List<Response<Map<String, String>>> tmp = []
+        redisService.withTransaction { Transaction redis ->
+            zoneId.each {
+                tmp << redis.hgetAll(ZONE_SEAT_KEY_PREFIX + it)
+            }
         }
+        tmp.each {
+            totalEmptySeat += it.get().count {it.value == ZONE_SEAT_VALUE_EMPTY}
+        }
+        return totalEmptySeat
     }
-    def countEventEmptySeat(Long eventId){
+    int countEventEmptySeat(Event event){
+        def zoneIds = event.zones.collect {
+            it.id
+        }
+        return countZoneEmptySeat(zoneIds)
+    }
+
+    def getZoneEmptySeat(Long zoneId){
 
     }
+
+
     def incrZoneSeat(Long zoneId, int rowIndex, int colIndex){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
         String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex

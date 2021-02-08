@@ -38,9 +38,8 @@ class Zone {
         this.zoneCode = tmpNo
     }
 
-    def afterLoad(){
-        this.seats = selectSeatRedisService.getZoneSeats(this)
-    }
+//    def afterLoad(){
+//    }
 
 
     String getHashId(){
@@ -48,7 +47,7 @@ class Zone {
     }
 
     Map<String, String> getSeats(){
-        return this.seats
+        this.seats = selectSeatRedisService.getZoneSeats(this)
     }
     void setSeats(Map<String, String> redisSeats){
         this.seats = redisSeats
