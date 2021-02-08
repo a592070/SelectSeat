@@ -3,6 +3,10 @@ package selectseat
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
 import groovy.transform.CompileStatic
+import org.redisson.Redisson
+import org.redisson.api.RedissonClient
+import org.redisson.config.Config
+import org.redisson.spring.data.connection.RedissonConnectionFactory
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
@@ -18,11 +22,14 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.EnableAspectJAutoProxy
+import org.springframework.core.io.Resource
+
 import static selectseat.utils.StringUtils.*
 
 //@ComponentScan(basePackages = "selectseat")
@@ -49,6 +56,17 @@ class Application extends GrailsAutoConfiguration {
     Binding binding(Queue queue, CustomExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(DELAY_MESSAGE_KEY).noargs();
     }
+
+//    @Bean
+//    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
+//        return new RedissonConnectionFactory(redisson);
+//    }
+//
+//    @Bean(destroyMethod = "shutdown")
+//    public RedissonClient redisson(@Value("classpath:/redisson.yaml") Resource configFile) throws IOException {
+//        Config config = Config.fromYAML(configFile.getInputStream());
+//        return Redisson.create(config);
+//    }
 
 
 
