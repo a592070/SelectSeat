@@ -10,9 +10,6 @@ import static selectseat.redis.SelectSeatRedisService.ZONE_SEAT_FIELD_ROW_PREFIX
 @Transactional
 class ToolService {
 
-    def serviceMethod() {
-    }
-
     static String generateRandomWord(int digit, boolean numberOnly=false){
         //產生亂數密碼
         int[] word = new int[digit];
@@ -52,7 +49,7 @@ class ToolService {
         for (i in 0..<rowCount) {
             def rowList = []
             for (j in 0..<columnCount) {
-                String keyName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
+                String keyName = ZONE_SEAT_FIELD_ROW_PREFIX + i + '_'+ZONE_SEAT_FIELD_COLUMN_PREFIX + j
                 rowList << seats.get(keyName)
             }
             seatList << rowList

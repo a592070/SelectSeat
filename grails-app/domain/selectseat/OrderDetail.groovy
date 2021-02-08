@@ -21,7 +21,7 @@ class OrderDetail {
 
     static constraints = {
         zoneName nullable: false, blank: false
-        seatCode nullable: false, blank: false
+        seatRedisKey nullable: false, blank: false
         ticketType nullable: false, blank: false
     }
 

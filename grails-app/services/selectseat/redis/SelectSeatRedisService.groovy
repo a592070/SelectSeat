@@ -120,6 +120,7 @@ class SelectSeatRedisService {
         }
         return totalEmptySeat
     }
+
     int countEventEmptySeat(Event event){
         def zoneIds = event.zones.collect {
             it.id
