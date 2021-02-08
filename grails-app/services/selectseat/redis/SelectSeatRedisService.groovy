@@ -6,6 +6,7 @@ import grails.plugins.redis.RedisService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
+import redis.clients.jedis.JedisMonitor
 import redis.clients.jedis.Transaction
 import selectseat.Seat
 import selectseat.Zone
@@ -33,10 +34,10 @@ class SelectSeatRedisService {
     //      ROW:01_COL:01 = 0
     //      01_01 = 0
     // }
-    static final String ZONE_PREFIX = "ZONE:"
-    static final String ROW_PREFIX =  "ROW:"
-    static final String COLUMN_PREFIX = "COL:"
-    static final String INTERPOINT = "_"
+    static final String ZONE_SEAT_KEY_PREFIX = "ZONE:"
+    static final String ZONE_SEAT_FIELD_ROW_PREFIX =  "ROW:"
+    static final String ZONE_SEAT_FIELD_COLUMN_PREFIX = "COL:"
+    static final String ZONE_SEAT_FIELD_INTERPOINT = "_"
     static final String ZONE_SEAT_VALUE_DISABLED = Byte.MIN_VALUE
     static final String ZONE_SEAT_VALUE_EMPTY = 0
     static final String ZONE_SEAT_VALUE_RESERVED = 1
@@ -44,14 +45,12 @@ class SelectSeatRedisService {
 
     static final String INDEX_ZONE_KEY_PREFIX = "INDEX:ZONE:"
 //    static final String SELECTOR_USR_KEY_PREFIX = "SELECTOR:USR:"
-    static final String OCCUPY_KEY_USR_PREFIX = "OCCUPY:USR:"
-    static final String OCCUPY_KEY_ZONE_PREFIX = ":ZONE:"
+    static final String OCCUPY_USR_KEY_PREFIX = "OCCUPY:USR:"
     static final String MUTEX_LOCK_ZONE_KEY_PREFIX = "MUTEX_LOCK_ZONE:"
 
 
     static final String INDEX_ZONE_TEMP_KEY = "TEMP:INDEX:ZONE:"
-    static final String OCCUPY_KEY_PATTERN_ALL_USER_IN_ZONE = OCCUPY_KEY_USR_PREFIX + "*" + OCCUPY_KEY_ZONE_PREFIX
-//    static final String OCCUPY_KEY_PATTERN_ALL_ZONE_WITH_USR = OCCUPY_KEY_USR_PREFIX
+
 
 
     @Autowired
@@ -92,7 +91,7 @@ class SelectSeatRedisService {
 
 
     Map<String, String> setZoneSeats(Zone zone, Set<List<Integer>> disableSeat){
-        String zoneKey = ZONE_PREFIX + zone.id
+        String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
         String zoneIndexKey = INDEX_ZONE_KEY_PREFIX + zone.id
 
         Map<String, String> map = [:]
@@ -101,9 +100,10 @@ class SelectSeatRedisService {
 
         withLock(lockKey, {
             redisService.withTransaction { Transaction transaction ->
+//            transaction.hmset(zoneKey, map as Map<String, String>)
                 for (i in 0..<zone.rowCount) {
                     for (j in 0..<zone.columnCount) {
-                        String fieldName = ROW_PREFIX + i + INTERPOINT + COLUMN_PREFIX + j
+                        String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + i + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + j
                         String fieldValue = ZONE_SEAT_VALUE_EMPTY
                         if([i,j] in disableSeat) fieldValue = ZONE_SEAT_VALUE_DISABLED
 
@@ -118,7 +118,7 @@ class SelectSeatRedisService {
         return map
     }
     Map<String, String> getZoneSeats(Zone zone){
-        String zoneKey = ZONE_PREFIX + zone.id
+        String zoneKey = ZONE_SEAT_KEY_PREFIX + zone.id
         Map<String, String> map = [:]
         redisService.withRedis { Jedis jedis ->
             map = jedis.hgetAll(zoneKey)
@@ -129,79 +129,54 @@ class SelectSeatRedisService {
     Long countZoneEmptySeat(Long zoneId){
         Long count = 0
 
-        String tmpIndexKey = INDEX_ZONE_TEMP_KEY + zoneId
-        String indexKey = INDEX_ZONE_KEY_PREFIX + zoneId
-
-        String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + zoneId
-        withLock(lockKey, {
-            redisService.withRedis { Jedis redis ->
-                if (!redis.exists(tmpIndexKey)) tmpIndexKey = indexKey
-                count = redis.zcount(tmpIndexKey, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
-            }
-        })
+        redisService.withRedis { Jedis redis ->
+            count = redis.zcount(INDEX_ZONE_KEY_PREFIX + zoneId, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
+        }
         return count
     }
+//    Long countEventEmptySeat(Event event){
+//        return event.zones.count {
+//            countZoneEmptySeat(it.id)
+//        }
+//    }
 
     Set<String> getZoneEmptySeats(Long zoneId){
         def emptySeat = []
 
-        String tmpIndexKey = INDEX_ZONE_TEMP_KEY + zoneId
-        String indexKey = INDEX_ZONE_KEY_PREFIX + zoneId
-
         String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + zoneId
         withLock(lockKey, {
             redisService.withRedis { Jedis redis ->
-                if (!redis.exists(tmpIndexKey)) tmpIndexKey = indexKey
-                emptySeat = redis.zrangeByScore(tmpIndexKey, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
+                emptySeat = redis.zrangeByScore(INDEX_ZONE_KEY_PREFIX + zoneId, ZONE_SEAT_VALUE_EMPTY, ZONE_SEAT_VALUE_EMPTY)
             }
         })
-
         return emptySeat
     }
 
 
-    def setUserOccupySeat(Seat oldSeat, int rowIndex, int columnIndex) {
-        String occupyUserKey = OCCUPY_KEY_USR_PREFIX + oldSeat.userId + OCCUPY_KEY_ZONE_PREFIX + oldSeat.zoneId
+    def setUserOccupySeat(Seat oldSeat, Seat newSeat) {
+        String occupyUserKey = OCCUPY_USR_KEY_PREFIX + oldSeat.userId
 
-        String occupyUserOldValue = ROW_PREFIX + oldSeat.rowIndex + INTERPOINT + COLUMN_PREFIX + oldSeat.columnIndex
-        String occupyUserNewValue = ROW_PREFIX + rowIndex + INTERPOINT + COLUMN_PREFIX + columnIndex
+        String occupyUserOldValue = ZONE_SEAT_FIELD_ROW_PREFIX + oldSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + oldSeat.columnIndex
+        String occupyUserNewValue = ZONE_SEAT_FIELD_ROW_PREFIX + newSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + newSeat.columnIndex
 
-        String seatMapKey = ZONE_PREFIX + oldSeat.zoneId
-        String seatMapField = occupyUserNewValue
+        String indexKey = INDEX_ZONE_KEY_PREFIX + oldSeat.zoneId
+        String indexOldField = ZONE_SEAT_FIELD_ROW_PREFIX + oldSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + oldSeat.columnIndex
+        String indexNewField = ZONE_SEAT_FIELD_ROW_PREFIX + newSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + newSeat.columnIndex
 
         String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + oldSeat.zoneId
         withLock(lockKey, {
-            redisService.withRedis { Jedis redis ->
-                redis.zrem(occupyUserKey, occupyUserOldValue)
-                redis.zadd(occupyUserKey, ZONE_SEAT_VALUE_RESERVED, occupyUserNewValue)
+            redisService.withRedis { Jedis jedis ->
+
             }
-
-            updateTempIndexZone(oldSeat.zoneId)
         })
-
-        oldSeat.setRowIndex(rowIndex)
-        oldSeat.setColumnIndex(columnIndex)
-        return oldSeat
     }
-
-    private def updateTempIndexZone(Long zoneId){
-        String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + zoneId
-        String pattern = OCCUPY_KEY_PATTERN_ALL_USER_IN_ZONE + zoneId
-        String tmpIndexKey = INDEX_ZONE_TEMP_KEY + zoneId
-        redisService.withRedis { Jedis redis ->
-            def keys = redis.keys(pattern)
-            keys.add(INDEX_ZONE_KEY_PREFIX + zoneId)
-            redis.zunionstore(tmpIndexKey, keys as String[])
-        }
-    }
-
 
 
 
 
 
     def test(Long zoneId, int num){
-        String zoneKey = ZONE_PREFIX + zoneId
+        String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
         redisService.withRedis { Jedis jedis ->
         }
 
