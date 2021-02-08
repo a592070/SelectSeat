@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisMonitor
 import redis.clients.jedis.Transaction
+import selectseat.Seat
 import selectseat.Zone
 
 @Service
@@ -43,9 +44,12 @@ class SelectSeatRedisService {
 //    static final String ZONE_SEAT_VALUE_ = ""
 
     static final String INDEX_ZONE_KEY_PREFIX = "INDEX:ZONE:"
-    static final String SELECTOR_USR_KEY_PREFIX = "SELECTOR:USR:"
+//    static final String SELECTOR_USR_KEY_PREFIX = "SELECTOR:USR:"
+    static final String OCCUPY_USR_KEY_PREFIX = "OCCUPY:USR:"
     static final String MUTEX_LOCK_ZONE_KEY_PREFIX = "MUTEX_LOCK_ZONE:"
 
+
+    static final String INDEX_ZONE_TEMP_KEY = "TEMP:INDEX:ZONE:"
 
 
 
@@ -59,44 +63,30 @@ class SelectSeatRedisService {
     }
 
 
-    def setnxMutexLock(String lockKey){
+    def setMutexLock(String lockKey, String value){
         redisService.withRedis { Jedis jedis ->
-            return jedis.setnx(lockKey, MUTEX_LOCK_ON_LOCK)
+            return jedis.set(lockKey, value, "NX", "EX", 10)
         }
     }
-    def releaseMutexLock(String lockKey){
-        deleteKey(lockKey)
+    def releaseMutexLock(String lockKey, String value){
+        redisService.withRedis {Jedis jedis ->
+            if(jedis.get(lockKey) == value) deleteKey(lockKey)
+        }
     }
 
     def withLock(String lockKey, Closure closure){
+        String value = UUID.randomUUID()
         try{
-            while(setnxMutexLock(lockKey) != 0){
+            while(setMutexLock(lockKey, value) != 0){
                 Thread.sleep(50)
             }
             closure()
         }catch(Exception e){
             e.printStackTrace()
         }finally{
-            releaseMutexLock(lockKey)
+            releaseMutexLock(lockKey, value)
         }
     }
-
-    def expireMutexLock(String lockKey, int timeout){
-        redisService.withRedis { Jedis jedis ->
-            jedis.expire(MUTEX_LOCK+lockKey, timeout)
-        }
-        new JedisMonitor() {
-            @Override
-            void onCommand(String command) {
-
-            }
-        }
-    }
-    def delMutexLock(String lockKey){
-        deleteKey(MUTEX_LOCK+lockKey)
-    }
-
-
 
 
 
@@ -163,18 +153,31 @@ class SelectSeatRedisService {
     }
 
 
-    def setUserSelectSeat(Long userId, Long zoneId, int rowIndex, int colIndex){
-        String selectorUserKey = SELECTOR_USR_KEY_PREFIX + userId
-        String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex
-        String fieldName1 = ZONE_SEAT_FIELD_ROW_PREFIX + 0 + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + 2
+    def setUserOccupySeat(Seat oldSeat, Seat newSeat) {
+        String occupyUserKey = OCCUPY_USR_KEY_PREFIX + oldSeat.userId
 
+        String occupyUserOldValue = ZONE_SEAT_FIELD_ROW_PREFIX + oldSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + oldSeat.columnIndex
+        String occupyUserNewValue = ZONE_SEAT_FIELD_ROW_PREFIX + newSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + newSeat.columnIndex
+
+        String indexKey = INDEX_ZONE_KEY_PREFIX + oldSeat.zoneId
+        String indexOldField = ZONE_SEAT_FIELD_ROW_PREFIX + oldSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + oldSeat.columnIndex
+        String indexNewField = ZONE_SEAT_FIELD_ROW_PREFIX + newSeat.rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + newSeat.columnIndex
+
+        String lockKey = MUTEX_LOCK_ZONE_KEY_PREFIX + oldSeat.zoneId
+        withLock(lockKey, {
+            redisService.withRedis { Jedis jedis ->
+
+            }
+        })
     }
+
+
+
 
 
     def test(Long zoneId, int num){
         String zoneKey = ZONE_SEAT_KEY_PREFIX + zoneId
         redisService.withRedis { Jedis jedis ->
-
         }
 
     }

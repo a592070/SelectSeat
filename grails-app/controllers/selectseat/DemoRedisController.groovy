@@ -3,12 +3,15 @@ package selectseat
 import grails.async.Promise
 import grails.async.PromiseList
 import grails.plugins.redis.RedisService
+import org.redisson.api.RedissonClient
+import org.redisson.client.codec.StringCodec
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessagePostProcessor
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import selectseat.redis.SelectSeatRedisService
 
@@ -31,6 +34,9 @@ class DemoRedisController {
     RabbitTemplate rabbitTemplate
 
     def bookingService
+
+    @Autowired
+    RedissonClient redissonClient;
 
     def index() {
 //        def bitmap = [0,1,0,1,0,0,0,0,0,1,1,1,0,1,0] // 15
@@ -116,13 +122,14 @@ class DemoRedisController {
 
 //        println Ticket.get(1).getTypeName()
 
-        def seat = selectSeatRedisService.countZoneEmptySeat([11, 99, 9])
-        def seat1 = selectSeatRedisService.countZoneEmptySeat([11])
-        def seat2 = selectSeatRedisService.countZoneEmptySeat([99])
-        def seat3 = selectSeatRedisService.countZoneEmptySeat([9])
-        println "${seat} = ${seat1}+${seat2}+${seat3}"
+//        def seat = selectSeatRedisService.countZoneEmptySeat([11, 99, 9])
+//        def seat1 = selectSeatRedisService.countZoneEmptySeat([11])
+//        def seat2 = selectSeatRedisService.countZoneEmptySeat([99])
+//        def seat3 = selectSeatRedisService.countZoneEmptySeat([9])
+//        println "${seat} = ${seat1}+${seat2}+${seat3}"
 
-
+        redissonClient.getKeys().getKeysStream().forEach({ v -> println v })
+        println redissonClient.getMap("ZONE:14", new StringCodec()).readAllMap()
         render new Date().format("yyyy/MM/dd HH:mm:ss")+"=======send Message"
 
 //        render 'Hello World'
