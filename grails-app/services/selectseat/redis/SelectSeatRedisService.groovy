@@ -168,10 +168,6 @@ class SelectSeatRedisService {
         String fieldName = ZONE_SEAT_FIELD_ROW_PREFIX + rowIndex + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + colIndex
         String fieldName1 = ZONE_SEAT_FIELD_ROW_PREFIX + 0 + ZONE_SEAT_FIELD_INTERPOINT + ZONE_SEAT_FIELD_COLUMN_PREFIX + 2
 
-
-        redisService.withRedis { Jedis redis ->
-            redis.eval()
-        }
     }
 
 
