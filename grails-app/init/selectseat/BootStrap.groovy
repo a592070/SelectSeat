@@ -5,7 +5,7 @@ import grails.gorm.transactions.Transactional
 class BootStrap {
 
     def init = { servletContext ->
-//        initData()
+        initData()
     }
 
 
@@ -32,11 +32,11 @@ class BootStrap {
         }
 
         def e1AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 1000, event: e1)
-        def e1HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 500, event: e1)
+        def e1HalfTicket = new Ticket(type: Ticket.TYPE_CONCESSION_TICKET, price: 500, event: e1)
         def e2AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 1600, event: e2)
-        def e2HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 1000, event: e2)
+        def e2HalfTicket = new Ticket(type: Ticket.TYPE_CONCESSION_TICKET, price: 1000, event: e2)
         def e3AdultTicket = new Ticket(type: Ticket.TYPE_ADULT_TICKET, price: 100, event: e3)
-        def e3HalfTicket = new Ticket(type: Ticket.TYPE_HALF_TICKET, price: 50, event: e3)
+        def e3HalfTicket = new Ticket(type: Ticket.TYPE_CONCESSION_TICKET, price: 50, event: e3)
         [e1AdultTicket, e1HalfTicket, e2AdultTicket, e2HalfTicket, e3AdultTicket, e3HalfTicket].each {
             if(Ticket.find(it) == null) it.save()
         }
