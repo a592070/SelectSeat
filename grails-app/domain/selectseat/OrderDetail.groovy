@@ -1,8 +1,7 @@
 package selectseat
 
-import selectseat.redis.SelectSeatRedisService
 
-import static selectseat.redis.SelectSeatRedisService.ZONE_SEAT_FIELD_INTERPOINT
+import static selectseat.redis.SelectSeatRedisService.INTERPOINT
 
 class OrderDetail {
     Long id;
@@ -26,7 +25,7 @@ class OrderDetail {
     }
 
     String getSeatCode(){
-        def rowColIdx = seatRedisKey.split(ZONE_SEAT_FIELD_INTERPOINT)
+        def rowColIdx = seatRedisKey.split(INTERPOINT)
         return ""
     }
     String getZoneName(){

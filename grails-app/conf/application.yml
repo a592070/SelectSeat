@@ -182,4 +182,3 @@ mq:
         exchange: "seat-select-exchange"
         queue: "seat-select-queue"
         key: "seat-select-key"
-
