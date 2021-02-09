@@ -2,10 +2,9 @@ package selectseat.utility
 
 import grails.gorm.transactions.Transactional
 import org.hashids.Hashids
-import selectseat.redis.SelectSeatRedisService
 
-import static selectseat.redis.SelectSeatRedisService.ZONE_SEAT_FIELD_COLUMN_PREFIX
-import static selectseat.redis.SelectSeatRedisService.ZONE_SEAT_FIELD_ROW_PREFIX
+import static selectseat.redis.SelectSeatRedisService.COLUMN_PREFIX
+import static selectseat.redis.SelectSeatRedisService.ROW_PREFIX
 
 @Transactional
 class ToolService {
@@ -49,7 +48,7 @@ class ToolService {
         for (i in 0..<rowCount) {
             def rowList = []
             for (j in 0..<columnCount) {
-                String keyName = ZONE_SEAT_FIELD_ROW_PREFIX + i + '_'+ZONE_SEAT_FIELD_COLUMN_PREFIX + j
+                String keyName = ROW_PREFIX + i + '_'+COLUMN_PREFIX + j
                 rowList << seats.get(keyName)
             }
             seatList << rowList
