@@ -13,7 +13,10 @@ import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import redis.clients.jedis.Pipeline
 import selectseat.redis.SelectSeatRedisService
+
+import java.util.concurrent.CopyOnWriteArrayList
 
 import static selectseat.utils.StringUtils.*
 
@@ -21,7 +24,7 @@ import static selectseat.utils.StringUtils.*
 @Component
 class DemoRedisController {
 
-//    static RedisService redisService
+    static RedisService redisService
 //    def selectedService
 //    def seatService
 //    @Autowired
@@ -128,10 +131,29 @@ class DemoRedisController {
 //        def seat3 = selectSeatRedisService.countZoneEmptySeat([9])
 //        println "${seat} = ${seat1}+${seat2}+${seat3}"
 
-        redissonClient.getKeys().getKeysStream().forEach({ v -> println v })
-        println redissonClient.getMap("ZONE:14", new StringCodec()).readAllMap()
-        render new Date().format("yyyy/MM/dd HH:mm:ss")+"=======send Message"
+//        redissonClient.getKeys().getKeysStream().forEach({ v -> println v })
+//        println redissonClient.getMap("ZONE:14", new StringCodec()).readAllMap()
+//        render new Date().format("yyyy/MM/dd HH:mm:ss")+"=======send Message"
 
-//        render 'Hello World'
+
+//        List<String> needLocking = ["foo", "fooo"] as CopyOnWriteArrayList
+//        String value = UUID.randomUUID()
+//
+//        List<String> locked = [] as CopyOnWriteArrayList
+//        List results = redisService.withPipeline ({ Pipeline redis ->
+//            needLocking.each {
+//                return redis.set(it, value, "NX", "PX", 10*1000)
+//            }
+//        }, true)
+//        println results
+        long now = System.currentTimeMillis()
+        selectSeatRedisService.withMultipleLock(["foo", "fooo", "foooo"] as Set<String>, {
+            for (i in 0..<10) {
+                Thread.sleep(1000)
+                println Thread.currentThread().toString() + "get key ${i}=====" + System.currentTimeMillis()
+            }
+        })
+
+        render ""
     }
 }
